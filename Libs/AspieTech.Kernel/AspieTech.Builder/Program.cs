@@ -13,8 +13,8 @@ namespace AspieTech.Builder
     {
         static void Main(string[] args)
         {
-            LocalizationProvider provider = new LocalizationProvider();
-            provider.GetString<EKernelCodes>(EKernelCodes.x54x5, CultureInfo.CurrentCulture);
+            ResourceHandler provider = new ResourceHandler();
+            provider.Export();
         }
     }
 }
