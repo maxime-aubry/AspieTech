@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\LocalizationUtilityAttribute.cs" />
     <Compile Include="Attributes\ResourceSerialDetailsAttribute.cs" />
     <Compile Include="i18nResources\AspieTech.Kernel.en.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -1,20 +1,21 @@
 ﻿using AspieTech.Model.Enumerations;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AspieTech.LocalizationHandler.Attributes
 {
-    class ResourceSerialDetailsAttribute : Attribute
+    public class ResourceSerialDetailsAttribute : Attribute
     {
         #region Private properties
         private ESolution solution;
         #endregion
 
         #region Constructors
+        /// <summary>
+        /// The constructor.
+        /// </summary>
+        /// <param name="solution">The solution accorded to this resource.</param>
         public ResourceSerialDetailsAttribute(ESolution solution)
         {
             this.solution = solution;
@@ -26,6 +27,9 @@ namespace AspieTech.LocalizationHandler.Attributes
         #endregion
 
         #region Getters & Setters
+        /// <summary>
+        /// The solution accorded to this resource.
+        /// </summary>
         public ESolution Solution
         {
             get
@@ -48,10 +52,19 @@ namespace AspieTech.LocalizationHandler.Attributes
         #endregion
 
         #region Public methods
-        public static ResourceSerialDetailsAttribute GetDetails<T>(T resourceSerial)
+        /// <summary>
+        /// Get details provided to this resource.
+        /// </summary>
+        /// <typeparam name="T">The resource type.</typeparam>
+        /// <param name="resourceSerial">The resource serial.</param>
+        /// <returns></returns>
+        public static ResourceSerialDetailsAttribute GetDetails<T>(T resourceSerial) where T : struct, IConvertible
         {
             try
             {
+                if (!typeof(T).IsEnum)
+                    throw new ArgumentException("Le type T doit être une énumération.");
+
                 MemberInfo memberInfo = typeof(T).GetMember(resourceSerial.ToString()).FirstOrDefault();
 
                 if (memberInfo != null)

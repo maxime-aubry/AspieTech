@@ -9,9 +9,7 @@ using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Resources;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -55,16 +53,23 @@ namespace AspieTech.LocalizationHandler
         /// <param name="resource">The resource serial.</param>
         /// <param name="culture">The user cutlure.</param>
         /// <returns></returns>
-        public string GetString<T>(T resource, CultureInfo culture)
+        public string GetString<T>(T resourceSerial, CultureInfo culture) where T : struct, IConvertible
         {
             try
             {
-                ResourceSerialDetailsAttribute resourceSerialDetails = ResourceSerialDetailsAttribute.GetDetails<T>(resource);
+                if (!typeof(T).IsEnum)
+                    throw new ArgumentException("Le type T doit être une énumération.");
+
+                bool isLocalizationUtility = LocalizationUtilityAttribute.IsLocalizationUtility<T>();
+                if (!isLocalizationUtility)
+                    throw new ArgumentException("Le type T doit être un utilitaire de traduction.");
+
+                ResourceSerialDetailsAttribute resourceSerialDetails = ResourceSerialDetailsAttribute.GetDetails<T>(resourceSerial);
                 SolutionDetailsAttribute solutionDetails = SolutionDetailsAttribute.GetDetails(resourceSerialDetails.Solution);
 
                 string path = string.Format("{0}.{1}.{2}", typeof(ResourceHandler).Namespace, "i18nResources", solutionDetails.ResourceName);
                 ResourceManager rm = new ResourceManager(path, typeof(ResourceHandler).Assembly);
-                string result = rm.GetString(resource.ToString(), culture);
+                string result = rm.GetString(resourceSerial.ToString(), culture);
                 return result;
             }
             catch (Exception e)
