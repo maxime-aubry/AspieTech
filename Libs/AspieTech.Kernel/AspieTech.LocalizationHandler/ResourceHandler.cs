@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace AspieTech.LocalizationHandler
 {
-    public class ResourceHandler
+    public class ResourceHandler : IResourceHandler
     {
         #region Private properties
         private Object locker = new Object();
