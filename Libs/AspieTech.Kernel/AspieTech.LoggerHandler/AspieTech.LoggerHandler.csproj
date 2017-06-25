@@ -7,8 +7,8 @@
     <ProjectGuid>{8B7C8285-6AE3-4A76-92DD-48CC6F51200A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AspieTech.CustomLogger</RootNamespace>
-    <AssemblyName>AspieTech.CustomLogger</AssemblyName>
+    <RootNamespace>AspieTech.LoggerHandler</RootNamespace>
+    <AssemblyName>AspieTech.LoggerHandler</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,8 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ILogger.cs" />
-    <Compile Include="Logger.cs" />
+    <Compile Include="ILoggerHandler.cs" />
+    <Compile Include="LoggerHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -14,7 +14,7 @@ namespace AspieTech.Builder
         static void Main(string[] args)
         {
             ResourceHandler provider = new ResourceHandler();
-            string translation = provider.GetString<EKernelCodes>(EKernelCodes.x54x5, CultureInfo.CurrentCulture);
+            string translation = provider.GetString<EKernelCodes>(EKernelCodes.x54x5, CultureInfo.CurrentCulture, "test", "azerty");
             provider.Export();
         }
     }

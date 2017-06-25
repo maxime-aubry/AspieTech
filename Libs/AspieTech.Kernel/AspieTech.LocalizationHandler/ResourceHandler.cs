@@ -53,7 +53,7 @@ namespace AspieTech.LocalizationHandler
         /// <param name="resource">The resource serial.</param>
         /// <param name="culture">The user cutlure.</param>
         /// <returns></returns>
-        public string GetString<T>(T resourceSerial, CultureInfo culture) where T : struct, IConvertible
+        public string GetString<T>(T resourceSerial, CultureInfo culture, params string[] args) where T : struct, IConvertible
         {
             try
             {
@@ -70,6 +70,11 @@ namespace AspieTech.LocalizationHandler
                 string path = string.Format("{0}.{1}.{2}", typeof(ResourceHandler).Namespace, "i18nResources", solutionDetails.ResourceName);
                 ResourceManager rm = new ResourceManager(path, typeof(ResourceHandler).Assembly);
                 string result = rm.GetString(resourceSerial.ToString(), culture);
+
+                if (args != null
+                    && args.Any())
+                    result = string.Format(result, args);
+
                 return result;
             }
             catch (Exception e)

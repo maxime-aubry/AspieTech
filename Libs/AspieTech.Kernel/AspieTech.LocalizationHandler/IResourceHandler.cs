@@ -30,7 +30,7 @@ namespace AspieTech.LocalizationHandler
         #endregion
 
         #region Public methods
-        string GetString<T>(T resourceSerial, CultureInfo culture) where T : struct, IConvertible;
+        string GetString<T>(T resourceSerial, CultureInfo culture, params string[] args) where T : struct, IConvertible;
         void Export();
         #endregion
 

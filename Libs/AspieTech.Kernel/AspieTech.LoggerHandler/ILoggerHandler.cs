@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AspieTech.CustomLogger
+namespace AspieTech.LoggerHandler
 {
-    public interface ILogger
+    public interface ILoggerHandler
     {
         #region Private properties
 

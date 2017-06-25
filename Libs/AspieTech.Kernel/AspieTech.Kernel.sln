@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspieTech.Builder", "AspieT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspieTech.Model", "AspieTech.Model\AspieTech.Model.csproj", "{E7BF3346-B7DE-4DBC-AB42-D17E148D3B1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspieTech.CustomLogger", "AspieTech.CustomLogger\AspieTech.CustomLogger.csproj", "{8B7C8285-6AE3-4A76-92DD-48CC6F51200A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspieTech.LoggerHandler", "AspieTech.LoggerHandler\AspieTech.LoggerHandler.csproj", "{8B7C8285-6AE3-4A76-92DD-48CC6F51200A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
