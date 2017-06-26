@@ -54,6 +54,14 @@
       <Project>{42fe9174-a75b-4039-8c04-f1421d3deec0}</Project>
       <Name>AspieTech.LocalizationHandler</Name>
     </ProjectReference>
+    <ProjectReference Include="..\AspieTech.LoggerHandler\AspieTech.LoggerHandler.csproj">
+      <Project>{8b7c8285-6ae3-4a76-92dd-48cc6f51200a}</Project>
+      <Name>AspieTech.LoggerHandler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AspieTech.Model\AspieTech.Model.csproj">
+      <Project>{e7bf3346-b7de-4dbc-ab42-d17e148d3b1d}</Project>
+      <Name>AspieTech.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

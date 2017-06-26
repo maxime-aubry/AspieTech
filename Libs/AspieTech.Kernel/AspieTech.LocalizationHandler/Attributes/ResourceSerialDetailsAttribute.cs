@@ -1,24 +1,23 @@
-﻿using AspieTech.Model.Enumerations;
+﻿using AspieTech.LocalizationHandler.Enumerations;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace AspieTech.LocalizationHandler.Attributes
 {
     public class ResourceSerialDetailsAttribute : Attribute
     {
         #region Private properties
-        private ESolution solution;
+        private ESolutionPart solutionPart;
         #endregion
 
         #region Constructors
-        /// <summary>
-        /// The constructor.
-        /// </summary>
-        /// <param name="solution">The solution accorded to this resource.</param>
-        public ResourceSerialDetailsAttribute(ESolution solution)
+        public ResourceSerialDetailsAttribute(ESolutionPart solutionPart)
         {
-            this.solution = solution;
+            this.solutionPart = solutionPart;
         }
         #endregion
 
@@ -27,20 +26,18 @@ namespace AspieTech.LocalizationHandler.Attributes
         #endregion
 
         #region Getters & Setters
-        /// <summary>
-        /// The solution accorded to this resource.
-        /// </summary>
-        public ESolution Solution
+        public ESolutionPart MyProperty
         {
             get
             {
-                return this.solution;
+                return this.solutionPart;
             }
             set
             {
-                this.solution = value;
+                this.solutionPart = value;
             }
         }
+
         #endregion
 
         #region Delegates
@@ -52,30 +49,27 @@ namespace AspieTech.LocalizationHandler.Attributes
         #endregion
 
         #region Public methods
-        /// <summary>
-        /// Get details provided to this resource.
-        /// </summary>
-        /// <typeparam name="T">The resource type.</typeparam>
-        /// <param name="resourceSerial">The resource serial.</param>
-        /// <returns></returns>
         public static ResourceSerialDetailsAttribute GetDetails<T>(T resourceSerial) where T : struct, IConvertible
         {
             try
             {
                 if (!typeof(T).IsEnum)
                     throw new ArgumentException("Le type T doit être une énumération.");
-
+                
                 MemberInfo memberInfo = typeof(T).GetMember(resourceSerial.ToString()).FirstOrDefault();
 
-                if (memberInfo != null)
-                {
-                    ResourceSerialDetailsAttribute attribute = memberInfo
-                                .GetCustomAttribute(typeof(ResourceSerialDetailsAttribute), false)
-                                as ResourceSerialDetailsAttribute;
-                    return attribute;
-                }
+                if (memberInfo == null)
+                    throw new ArgumentException("La valeur passée en paramètre n'appartient pas au type T.");
 
-                return null;
+                ResourceSerialDetailsAttribute details =
+                            memberInfo
+                            .GetCustomAttribute(typeof(ResourceSerialDetailsAttribute), false)
+                            as ResourceSerialDetailsAttribute;
+
+                if (details == null)
+                    throw new NullReferenceException("L'énumération n'est pas un accesseur à des ressources de traduction.");
+
+                return details;
             }
             catch (Exception e)
             {

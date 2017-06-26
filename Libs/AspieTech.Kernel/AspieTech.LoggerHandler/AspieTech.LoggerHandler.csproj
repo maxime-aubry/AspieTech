@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AspieTech.LoggerHandler</RootNamespace>
     <AssemblyName>AspieTech.LoggerHandler</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,13 +41,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ILoggerHandler.cs" />
-    <Compile Include="LoggerHandler.cs" />
+    <Compile Include="IErrorHandler.cs" />
+    <Compile Include="ErrorHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Attributes\" />
-    <Folder Include="ErrorCodes\" />
+    <ProjectReference Include="..\AspieTech.LocalizationHandler\AspieTech.LocalizationHandler.csproj">
+      <Project>{42fe9174-a75b-4039-8c04-f1421d3deec0}</Project>
+      <Name>AspieTech.LocalizationHandler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AspieTech.Model\AspieTech.Model.csproj">
+      <Project>{e7bf3346-b7de-4dbc-ab42-d17e148d3b1d}</Project>
+      <Name>AspieTech.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

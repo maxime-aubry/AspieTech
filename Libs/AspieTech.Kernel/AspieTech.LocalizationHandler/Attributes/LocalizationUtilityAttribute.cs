@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AspieTech.Model.Enumerations;
+using System;
 using System.Reflection;
 
 namespace AspieTech.LocalizationHandler.Attributes
@@ -6,11 +7,16 @@ namespace AspieTech.LocalizationHandler.Attributes
     public class LocalizationUtilityAttribute : Attribute
     {
         #region Private properties
-
+        private ESolution solution;
+        private Type resourceType;
         #endregion
 
         #region Constructors
-
+        public LocalizationUtilityAttribute(ESolution solution, Type resourceType)
+        {
+            this.solution = solution;
+            this.resourceType = resourceType;
+        }
         #endregion
 
         #region Finalizers
@@ -18,7 +24,35 @@ namespace AspieTech.LocalizationHandler.Attributes
         #endregion
 
         #region Getters & Setters
+        /// <summary>
+        /// The solution linked to this resource.
+        /// </summary>
+        public ESolution Solution
+        {
+            get
+            {
+                return this.solution;
+            }
+            set
+            {
+                this.solution = value;
+            }
+        }
 
+        /// <summary>
+        /// The resource manager type
+        /// </summary>
+        public Type ResourceType
+        {
+            get
+            {
+                return this.resourceType;
+            }
+            set
+            {
+                this.resourceType = value;
+            }
+        }
         #endregion
 
         #region Delegates
@@ -31,11 +65,12 @@ namespace AspieTech.LocalizationHandler.Attributes
 
         #region Public methods
         /// <summary>
-        /// Inform about if this element is a resource utility.
+        /// Get details provided to this resource.
         /// </summary>
         /// <typeparam name="T">The resource type.</typeparam>
+        /// <param name="resourceSerial">The resource serial.</param>
         /// <returns></returns>
-        public static bool IsLocalizationUtility<T>() where T : struct, IConvertible
+        public static LocalizationUtilityAttribute GetDetails<T>() where T : struct, IConvertible
         {
             try
             {
@@ -43,8 +78,11 @@ namespace AspieTech.LocalizationHandler.Attributes
                     throw new ArgumentException("Le type T doit être une énumération.");
 
                 LocalizationUtilityAttribute localizationUtility = typeof(T).GetCustomAttribute<LocalizationUtilityAttribute>(false);
-                bool isLocalizationUtility = (localizationUtility != null);
-                return isLocalizationUtility;
+
+                if (localizationUtility == null)
+                    throw new NullReferenceException("L'énumération n'est pas un accesseur à des ressources de traduction.");
+
+                return localizationUtility;
             }
             catch (Exception e)
             {

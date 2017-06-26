@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AspieTech.LoggerHandler
 {
-    public class LoggerHandler : ILoggerHandler
+    public class ErrorHandler : IErrorHandler
     {
         #region Private properties
 

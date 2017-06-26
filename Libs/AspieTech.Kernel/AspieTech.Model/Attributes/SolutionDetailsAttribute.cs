@@ -67,17 +67,19 @@ namespace AspieTech.Model.Attributes
             try
             {
                 MemberInfo memberInfo = typeof(ESolution).GetMember(solution.ToString()).FirstOrDefault();
+                
+                if (memberInfo == null)
+                    throw new ArgumentException("La valeur passée en paramètre n'appartient pas au type ESolution.");
 
-                if (memberInfo != null)
-                {
-                    SolutionDetailsAttribute attribute = 
-                                memberInfo
-                                .GetCustomAttribute(typeof(SolutionDetailsAttribute), false)
-                                as SolutionDetailsAttribute;
-                    return attribute;
-                }
+                SolutionDetailsAttribute details =
+                            memberInfo
+                            .GetCustomAttribute(typeof(SolutionDetailsAttribute), false)
+                            as SolutionDetailsAttribute;
 
-                return null;
+                if (details == null)
+                    throw new NullReferenceException("L'énumération n'est pas un accesseur à des ressources de traduction.");
+
+                return details;
             }
             catch (Exception e)
             {

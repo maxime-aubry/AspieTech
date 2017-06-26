@@ -9,6 +9,7 @@ using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Resources;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -60,15 +61,7 @@ namespace AspieTech.LocalizationHandler
                 if (!typeof(T).IsEnum)
                     throw new ArgumentException("Le type T doit être une énumération.");
 
-                bool isLocalizationUtility = LocalizationUtilityAttribute.IsLocalizationUtility<T>();
-                if (!isLocalizationUtility)
-                    throw new ArgumentException("Le type T doit être un utilitaire de traduction.");
-
-                ResourceSerialDetailsAttribute resourceSerialDetails = ResourceSerialDetailsAttribute.GetDetails<T>(resourceSerial);
-                SolutionDetailsAttribute solutionDetails = SolutionDetailsAttribute.GetDetails(resourceSerialDetails.Solution);
-
-                string path = string.Format("{0}.{1}.{2}", typeof(ResourceHandler).Namespace, "i18nResources", solutionDetails.ResourceName);
-                ResourceManager rm = new ResourceManager(path, typeof(ResourceHandler).Assembly);
+                ResourceManager rm = this.GetResourceManager<T>(resourceSerial);
                 string result = rm.GetString(resourceSerial.ToString(), culture);
 
                 if (args != null
@@ -112,6 +105,23 @@ namespace AspieTech.LocalizationHandler
         #endregion
 
         #region Private methods
+        /// <summary>
+        /// Get resource manager from a resource serial.
+        /// </summary>
+        /// <typeparam name="T">The resource Type.</typeparam>
+        /// <param name="resourceSerial">Thez resource serial.</param>
+        /// <returns></returns>
+        private ResourceManager GetResourceManager<T>(T resourceSerial) where T : struct, IConvertible
+        {
+            if (!typeof(T).IsEnum)
+                throw new ArgumentException("Le type T doit être une énumération.");
+
+            LocalizationUtilityAttribute localizationUtility = LocalizationUtilityAttribute.GetDetails<T>();
+            PropertyInfo propertyInfo = localizationUtility.ResourceType.GetProperty("ResourceManager", BindingFlags.Public | BindingFlags.Static);
+            ResourceManager resourceManager = propertyInfo.GetValue(null, null) as ResourceManager;
+            return resourceManager;
+        }
+
         /// <summary>
         /// Get dictionaries, grouped by dictionary name.
         /// </summary>

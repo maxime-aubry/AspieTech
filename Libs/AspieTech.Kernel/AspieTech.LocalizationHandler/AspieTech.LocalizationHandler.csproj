@@ -48,6 +48,12 @@
   <ItemGroup>
     <Compile Include="Attributes\LocalizationUtilityAttribute.cs" />
     <Compile Include="Attributes\ResourceSerialDetailsAttribute.cs" />
+    <Compile Include="Enumerations\ESolutionPart.cs" />
+    <Compile Include="i18nResources\AspieTech.Kernel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AspieTech.Kernel.resx</DependentUpon>
+    </Compile>
     <Compile Include="i18nResources\AspieTech.Kernel.en.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -61,8 +67,7 @@
     <Compile Include="IResourceHandler.cs" />
     <Compile Include="ResourceHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResourceSerials\ECAAHandlerCodes.cs" />
-    <Compile Include="ResourceSerials\EKernelCodes.cs" />
+    <Compile Include="ResourceSerials\EKernelCode.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="i18nResources\AspieTech.Kernel.en.resx">
@@ -72,6 +77,10 @@
     <EmbeddedResource Include="i18nResources\AspieTech.Kernel.fr.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AspieTech.Kernel.fr.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="i18nResources\AspieTech.Kernel.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AspieTech.Kernel.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
