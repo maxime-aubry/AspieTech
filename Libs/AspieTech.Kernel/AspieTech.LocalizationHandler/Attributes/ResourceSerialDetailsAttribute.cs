@@ -1,10 +1,7 @@
 ﻿using AspieTech.LocalizationHandler.Enumerations;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AspieTech.LocalizationHandler.Attributes
 {
@@ -12,12 +9,14 @@ namespace AspieTech.LocalizationHandler.Attributes
     {
         #region Private properties
         private ESolutionPart solutionPart;
+        private EResourceType resourceType;
         #endregion
 
         #region Constructors
-        public ResourceSerialDetailsAttribute(ESolutionPart solutionPart)
+        public ResourceSerialDetailsAttribute(ESolutionPart solutionPart, EResourceType resourceType)
         {
             this.solutionPart = solutionPart;
+            this.resourceType = resourceType;
         }
         #endregion
 
@@ -26,7 +25,7 @@ namespace AspieTech.LocalizationHandler.Attributes
         #endregion
 
         #region Getters & Setters
-        public ESolutionPart MyProperty
+        public ESolutionPart SolutionPart
         {
             get
             {
@@ -35,6 +34,18 @@ namespace AspieTech.LocalizationHandler.Attributes
             set
             {
                 this.solutionPart = value;
+            }
+        }
+        
+        public EResourceType ResourceType
+        {
+            get
+            {
+                return this.resourceType;
+            }
+            set
+            {
+                this.resourceType = value;
             }
         }
 

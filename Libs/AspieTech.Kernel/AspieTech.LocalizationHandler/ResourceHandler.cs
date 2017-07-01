@@ -1,5 +1,7 @@
-﻿using AspieTech.LocalizationHandler.Attributes;
-using AspieTech.Model.Attributes;
+﻿using AspieTech.BridgeHandler;
+using AspieTech.Engine.Handlers;
+using AspieTech.LocalizationHandler.Attributes;
+using AspieTech.LocalizationHandler.Enumerations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -11,7 +13,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace AspieTech.LocalizationHandler
@@ -20,13 +21,17 @@ namespace AspieTech.LocalizationHandler
     {
         #region Private properties
         private Object locker = new Object();
-        private Regex regex = new Regex(@"^(?<dictionaryName>\D+).(?<languageName>[a-z]{2}).resx$");
+        private IEnumerable<CultureInfo> cultures;
         #endregion
 
         #region Constructors
         public ResourceHandler()
         {
-
+            this.cultures = new List<CultureInfo>()
+            {
+                new CultureInfo("en"),
+                new CultureInfo("fr")
+            };
         }
         #endregion
 
@@ -47,6 +52,78 @@ namespace AspieTech.LocalizationHandler
         #endregion
 
         #region Public methods
+        public bool IsUserInterfaceResource<T>(T resourceSerial)
+            where T : struct, IConvertible
+        {
+            try
+            {
+                if (!typeof(T).IsEnum)
+                    throw new ArgumentException("Le type T doit être une énumération.");
+
+                LocalizationUtilityAttribute localizationUtility = LocalizationUtilityAttribute.GetDetails<T>();
+
+                if (localizationUtility == null)
+                    throw new ArgumentException("La type doit être une resource de traduction.");
+
+                ResourceSerialDetailsAttribute details = ResourceSerialDetailsAttribute.GetDetails<T>(resourceSerial);
+
+                bool result = (details.SolutionPart == ESolutionPart.UserInterface);
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
+        public bool IsClientErrorResource<T>(T resourceSerial)
+            where T : struct, IConvertible
+        {
+            try
+            {
+                if (!typeof(T).IsEnum)
+                    throw new ArgumentException("Le type T doit être une énumération.");
+
+                LocalizationUtilityAttribute localizationUtility = LocalizationUtilityAttribute.GetDetails<T>();
+
+                if (localizationUtility == null)
+                    throw new ArgumentException("La type doit être une resource de traduction.");
+
+                ResourceSerialDetailsAttribute details = ResourceSerialDetailsAttribute.GetDetails<T>(resourceSerial);
+
+                bool result = (details.SolutionPart == ESolutionPart.ClientError);
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
+        public bool IsServerErrorResource<T>(T resourceSerial)
+            where T : struct, IConvertible
+        {
+            try
+            {
+                if (!typeof(T).IsEnum)
+                    throw new ArgumentException("Le type T doit être une énumération.");
+
+                LocalizationUtilityAttribute localizationUtility = LocalizationUtilityAttribute.GetDetails<T>();
+
+                if (localizationUtility == null)
+                    throw new ArgumentException("La type doit être une resource de traduction.");
+
+                ResourceSerialDetailsAttribute details = ResourceSerialDetailsAttribute.GetDetails<T>(resourceSerial);
+
+                bool result = (details.SolutionPart == ESolutionPart.ServerError);
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
         /// <summary>
         /// Get a string from the dictionary.
         /// </summary>
@@ -54,14 +131,15 @@ namespace AspieTech.LocalizationHandler
         /// <param name="resource">The resource serial.</param>
         /// <param name="culture">The user cutlure.</param>
         /// <returns></returns>
-        public string GetString<T>(T resourceSerial, CultureInfo culture, params string[] args) where T : struct, IConvertible
+        public string GetString<T>(T resourceSerial, CultureInfo culture, params object[] args)
+            where T : struct, IConvertible
         {
             try
             {
                 if (!typeof(T).IsEnum)
                     throw new ArgumentException("Le type T doit être une énumération.");
 
-                ResourceManager rm = this.GetResourceManager<T>(resourceSerial);
+                ResourceManager rm = this.GetResourceManager<T>();
                 string result = rm.GetString(resourceSerial.ToString(), culture);
 
                 if (args != null
@@ -83,19 +161,33 @@ namespace AspieTech.LocalizationHandler
         {
             try
             {
-                string path = ConfigurationManager.AppSettings["i181ResourcesPath"];
-                IEnumerable<string> files = Directory.GetFiles(path, "*.resx");
-                IDictionary<string, IDictionary<string, string>> dictionaries = this.GetDictionaries(files);
+                IEnumerable<Type> enumerations = this.GetResourceSerialTypes();
 
-                Parallel.ForEach(dictionaries,
-                             dictionary =>
-                             {
-                                 lock (this.locker)
-                                 {
-                                     JObject serializedDictionary = this.SerializeDictionary(dictionary);
-                                     this.SaveDictionary(dictionary.Key, serializedDictionary);
-                                 }
-                             });
+                Parallel.ForEach(enumerations,
+                    enumeration =>
+                    {
+                        lock (this.locker)
+                        {
+                            // get resource manager
+                            ResourceManager resourceManager = null;
+                            {
+                                MethodInfo method = typeof(ResourceHandler).GetMethod("GetResourceManager", BindingFlags.NonPublic | BindingFlags.Instance);
+                                MethodInfo genericMethod = method.MakeGenericMethod(enumeration);
+                                resourceManager = genericMethod.Invoke(this, null) as ResourceManager;
+                            }
+
+                            // serializing
+                            JObject serializedDictionary = null;
+                            {
+                                MethodInfo method = typeof(ResourceHandler).GetMethod("SerializeDictionary", BindingFlags.NonPublic | BindingFlags.Instance);
+                                MethodInfo genericMethod = method.MakeGenericMethod(enumeration);
+                                serializedDictionary = genericMethod.Invoke(this, new object[] { resourceManager }) as JObject;
+                            }
+
+                            // saving
+                            this.SaveDictionary(enumeration.Name + ".json", serializedDictionary);
+                        }
+                    });
             }
             catch (Exception e)
             {
@@ -111,7 +203,8 @@ namespace AspieTech.LocalizationHandler
         /// <typeparam name="T">The resource Type.</typeparam>
         /// <param name="resourceSerial">Thez resource serial.</param>
         /// <returns></returns>
-        private ResourceManager GetResourceManager<T>(T resourceSerial) where T : struct, IConvertible
+        private ResourceManager GetResourceManager<T>()
+            where T : struct, IConvertible
         {
             if (!typeof(T).IsEnum)
                 throw new ArgumentException("Le type T doit être une énumération.");
@@ -123,66 +216,62 @@ namespace AspieTech.LocalizationHandler
         }
 
         /// <summary>
-        /// Get dictionaries, grouped by dictionary name.
+        /// Get every resource serial type in the project.
         /// </summary>
-        /// <param name="files">List of files pathes.</param>
         /// <returns></returns>
-        private IDictionary<string, IDictionary<string, string>> GetDictionaries(IEnumerable<string> files)
+        private IEnumerable<Type> GetResourceSerialTypes()
         {
             try
             {
-                IDictionary<string, IDictionary<string, string>> dictionary = new Dictionary<string, IDictionary<string, string>>();
+                IEnumerable<Type> types = new List<Type>();
 
-                foreach (string filepath in files)
+                foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
                 {
-                    string filename = Path.GetFileName(filepath);
-                    Match match = regex.Match(filename);
-
-                    if (match.Success)
+                    foreach (Type type in assembly.GetTypes())
                     {
-                        string dictionaryName = string.Concat(match.Groups["dictionaryName"].Value, ".json");
-                        string languageName = match.Groups["languageName"].Value;
-                        if (!dictionary.ContainsKey(dictionaryName))
-                            dictionary[dictionaryName] = new Dictionary<string, string>();
-                        dictionary[dictionaryName][languageName] = filepath;
+                        LocalizationUtilityAttribute localizationUtility = type.GetCustomAttribute<LocalizationUtilityAttribute>();
+
+                        if (localizationUtility != null)
+                            types = types.Concat(new[] { type });
                     }
                 }
 
-                dictionary = dictionary.OrderBy(d => d.Key).ToDictionary(d => d.Key, d => d.Value);
-                return dictionary;
+                return types;
             }
             catch (Exception e)
             {
                 throw;
             }
         }
-
+        
         /// <summary>
-        /// Serialize a dictionary.
+        /// Serialize dictionary.
         /// </summary>
-        /// <param name="dictionary">Dictionary to serialize.</param>
+        /// <param name="resourceManager"></param>
         /// <returns></returns>
-        private JObject SerializeDictionary(KeyValuePair<string, IDictionary<string, string>> dictionary)
+        private JObject SerializeDictionary<T>(ResourceManager resourceManager)
+            where T : struct, IConvertible
         {
             try
             {
+                IEnumerable<T> resourceSerials = EnumHandler.GetValues<T>();
+
                 JObject serializedDictionary = new JObject();
 
-                // Browse each part of dictionary (en, fr...)
-                foreach (KeyValuePair<string, string> dictionaryParts in dictionary.Value)
+                foreach (CultureInfo culture in this.cultures)
                 {
-                    using (ResXResourceReader resxReader = new ResXResourceReader(dictionaryParts.Value))
+                    serializedDictionary[culture.TwoLetterISOLanguageName] = new JObject();
+                    
+                    foreach (T resourceSerial in resourceSerials)
                     {
-                        // Add language to the dictionary part
-                        serializedDictionary[dictionaryParts.Key] = new JObject();
-                        
-                        foreach (DictionaryEntry entry in resxReader)
+                        if (!this.IsServerErrorResource<T>(resourceSerial))
                         {
-                            serializedDictionary[dictionaryParts.Key][entry.Key] = entry.Value.ToString();
+                            string message = resourceManager.GetString(resourceSerial.ToString(), culture);
+                            serializedDictionary[culture.TwoLetterISOLanguageName][resourceSerial.ToString()] = message;
                         }
                     }
                 }
-
+                
                 return serializedDictionary;
             }
             catch (Exception e)

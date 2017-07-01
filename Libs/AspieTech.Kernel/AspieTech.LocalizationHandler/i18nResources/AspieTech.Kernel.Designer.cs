@@ -59,14 +59,5 @@ namespace AspieTech.LocalizationHandler.i18nResources {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à ffff.
-        /// </summary>
-        public static string x54x5 {
-            get {
-                return ResourceManager.GetString("x54x5", resourceCulture);
-            }
-        }
     }
 }

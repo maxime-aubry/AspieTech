@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspieTech.Model", "AspieTec
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspieTech.LoggerHandler", "AspieTech.LoggerHandler\AspieTech.LoggerHandler.csproj", "{8B7C8285-6AE3-4A76-92DD-48CC6F51200A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspieTech.Engine", "AspieTech.Engine\AspieTech.Engine.csproj", "{D41B9302-F6F1-4D05-8005-3E457677DBA5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspieTech.BridgeHandler", "AspieTech.BridgeHandler\AspieTech.BridgeHandler.csproj", "{7597E308-DD94-4518-A354-2884F2118BA9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{8B7C8285-6AE3-4A76-92DD-48CC6F51200A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B7C8285-6AE3-4A76-92DD-48CC6F51200A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B7C8285-6AE3-4A76-92DD-48CC6F51200A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D41B9302-F6F1-4D05-8005-3E457677DBA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D41B9302-F6F1-4D05-8005-3E457677DBA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D41B9302-F6F1-4D05-8005-3E457677DBA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D41B9302-F6F1-4D05-8005-3E457677DBA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7597E308-DD94-4518-A354-2884F2118BA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7597E308-DD94-4518-A354-2884F2118BA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7597E308-DD94-4518-A354-2884F2118BA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7597E308-DD94-4518-A354-2884F2118BA9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

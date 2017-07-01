@@ -33,6 +33,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=4.6.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Autofac.4.6.0\lib\net45\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\NLog.4.4.11\lib\net45\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,13 +49,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DependenciesHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AspieTech.BridgeHandler\AspieTech.BridgeHandler.csproj">
+      <Project>{7597e308-dd94-4518-a354-2884f2118ba9}</Project>
+      <Name>AspieTech.BridgeHandler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AspieTech.Engine\AspieTech.Engine.csproj">
+      <Project>{d41b9302-f6f1-4d05-8005-3e457677dba5}</Project>
+      <Name>AspieTech.Engine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AspieTech.LocalizationHandler\AspieTech.LocalizationHandler.csproj">
       <Project>{42fe9174-a75b-4039-8c04-f1421d3deec0}</Project>
       <Name>AspieTech.LocalizationHandler</Name>

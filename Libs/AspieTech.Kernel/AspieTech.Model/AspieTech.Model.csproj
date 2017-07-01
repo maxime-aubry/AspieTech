@@ -45,5 +45,11 @@
     <Compile Include="Enumerations\ESolution.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AspieTech.BridgeHandler\AspieTech.BridgeHandler.csproj">
+      <Project>{7597e308-dd94-4518-a354-2884f2118ba9}</Project>
+      <Name>AspieTech.BridgeHandler</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

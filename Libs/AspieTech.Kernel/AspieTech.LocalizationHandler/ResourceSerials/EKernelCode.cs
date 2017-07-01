@@ -8,7 +8,7 @@ namespace AspieTech.LocalizationHandler.ResourceSerials
     [LocalizationUtility(ESolution.Kernel, typeof(AspieTech_Kernel))]
     public enum EKernelCode
     {
-        [ResourceSerialDetails(ESolutionPart.UserInterface)]
+        [ResourceSerialDetails(ESolutionPart.UserInterface, EResourceType.String)]
         x54x5
     }
 }

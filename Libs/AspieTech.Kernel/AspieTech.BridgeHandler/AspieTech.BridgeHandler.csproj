@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8B7C8285-6AE3-4A76-92DD-48CC6F51200A}</ProjectGuid>
+    <ProjectGuid>{7597E308-DD94-4518-A354-2884F2118BA9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AspieTech.LoggerHandler</RootNamespace>
-    <AssemblyName>AspieTech.LoggerHandler</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <RootNamespace>AspieTech.BridgeHandler</RootNamespace>
+    <AssemblyName>AspieTech.BridgeHandler</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,9 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\..\Packages\NLog.4.4.11\lib\net45\NLog.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -44,21 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LocalizableLogHandler.cs" />
+    <Compile Include="ILocalizableLogHandler.cs" />
+    <Compile Include="IResourceHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\AspieTech.BridgeHandler\AspieTech.BridgeHandler.csproj">
-      <Project>{7597e308-dd94-4518-a354-2884f2118ba9}</Project>
-      <Name>AspieTech.BridgeHandler</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\AspieTech.Model\AspieTech.Model.csproj">
-      <Project>{e7bf3346-b7de-4dbc-ab42-d17e148d3b1d}</Project>
-      <Name>AspieTech.Model</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

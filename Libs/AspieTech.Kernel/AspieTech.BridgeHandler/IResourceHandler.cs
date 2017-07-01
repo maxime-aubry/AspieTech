@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace AspieTech.LocalizationHandler
+namespace AspieTech.BridgeHandler
 {
     public interface IResourceHandler
     {
@@ -30,7 +30,10 @@ namespace AspieTech.LocalizationHandler
         #endregion
 
         #region Public methods
-        string GetString<T>(T resourceSerial, CultureInfo culture, params string[] args) where T : struct, IConvertible;
+        bool IsUserInterfaceResource<T>(T resourceSerial) where T : struct, IConvertible;
+        bool IsClientErrorResource<T>(T resourceSerial) where T : struct, IConvertible;
+        bool IsServerErrorResource<T>(T resourceSerial) where T : struct, IConvertible;
+        string GetString<T>(T resourceSerial, CultureInfo culture, params object[] args) where T : struct, IConvertible;
         void Export();
         #endregion
 

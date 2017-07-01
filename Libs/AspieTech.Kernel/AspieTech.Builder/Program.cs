@@ -1,21 +1,23 @@
-﻿using AspieTech.LocalizationHandler;
+﻿using AspieTech.BridgeHandler;
 using AspieTech.LocalizationHandler.ResourceSerials;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Autofac;
 
 namespace AspieTech.Builder
 {
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
-            ResourceHandler provider = new ResourceHandler();
-            string translation = provider.GetString<EKernelCode>(EKernelCode.x54x5, CultureInfo.CurrentCulture, "test", "azerty");
-            provider.Export();
+            DependenciesHandler.Configure();
+
+            using (ILifetimeScope scope = DependenciesHandler.Container.BeginLifetimeScope())
+            {
+                ILocalizableLogHandler localizableLogHandler = scope.Resolve<ILocalizableLogHandler>();
+                IResourceHandler resourceHandler = scope.Resolve<IResourceHandler>();
+
+                //localizableLogHandler.LocalizableError<EKernelCode>(EKernelCode.x54x5, "test", "azerty");
+                resourceHandler.Export();
+            }
         }
     }
 }
