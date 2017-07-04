@@ -9,10 +9,10 @@ namespace AspieTech.Model.Enumerations
 {
     public enum ESolution
     {
-        [SolutionDetailsAttribute("AspieTech CAA Handler", "")]
+        [SolutionDetailsAttribute("AspieTech CAA Handler")]
         CAAHandler,
 
-        [SolutionDetailsAttribute("AspieTech Kernel", "AspieTech.Kernel")]
+        [SolutionDetailsAttribute("AspieTech Kernel")]
         Kernel
     }
 }

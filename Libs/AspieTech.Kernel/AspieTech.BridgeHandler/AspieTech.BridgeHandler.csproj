@@ -41,7 +41,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ILocalizableLogHandler.cs" />
-    <Compile Include="IResourceHandler.cs" />
+    <Compile Include="LocalizationHandler\IResourceHandler.cs" />
+    <Compile Include="LocalizationHandler\IResourceInfo.cs" />
+    <Compile Include="LocalizationHandler\IResourceResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

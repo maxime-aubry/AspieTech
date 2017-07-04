@@ -1,4 +1,5 @@
 ﻿using AspieTech.BridgeHandler;
+using AspieTech.BridgeHandler.LocalizationHandler;
 using NLog;
 using System;
 using System.Diagnostics;
@@ -38,114 +39,229 @@ namespace AspieTech.LoggerHandler
         #endregion
 
         #region Public methods
+        /// <summary>
+        /// Get localized logger.
+        /// </summary>
+        /// <returns></returns>
         public static LocalizableLogHandler GetCurrentLocalizedLogger()
         {
             return (LocalizableLogHandler)LogManager.GetCurrentClassLogger(typeof(LocalizableLogHandler));
         }
 
-        public void LocalizableError<T>(T resourceSerial, Exception exception = null, params object[] args)
-            where T : struct, IConvertible
+        /// <summary>
+        /// Get a localizable error message.
+        /// </summary>
+        /// <typeparam name="TResourceCode">The resource type.</typeparam>
+        /// <param name="resourceCode">The resource code.</param>
+        /// <param name="exception">The exception.</param>
+        /// <param name="args">The args (for string formatting).</param>
+        public void LocalizableError<TResourceCode>(TResourceCode resourceCode, Exception exception = null, params object[] args)
+            where TResourceCode : struct, IConvertible
         {
-            this.LocalizableLogInternal(LogLevel.Error, resourceSerial, exception, null, null, args);
+            this.LocalizableLogInternal(LogLevel.Error, resourceCode, exception, null, null, args);
         }
 
-        public void LocalizableError<T>(T resourceSerial, params object[] args)
-            where T : struct, IConvertible
+        /// <summary>
+        /// Get a localizable error message.
+        /// </summary>
+        /// <typeparam name="TResourceCode">The resource type.</typeparam>
+        /// <param name="resourceCode">The resource code.</param>
+        /// <param name="args">The args (for string formatting).</param>
+        public void LocalizableError<TResourceCode>(TResourceCode resourceCode, params object[] args)
+            where TResourceCode : struct, IConvertible
         {
-            this.LocalizableError<T>(resourceSerial, null, args);
+            this.LocalizableError<TResourceCode>(resourceCode, null, args);
         }
 
-        public void LocalizableInfo<T>(T resourceSerial, Exception exception = null, params object[] args)
-            where T : struct, IConvertible
+        /// <summary>
+        /// Get a localizable info message.
+        /// </summary>
+        /// <typeparam name="TResourceCode">The resource type.</typeparam>
+        /// <param name="resourceCode">The resource code.</param>
+        /// <param name="exception">The exception.</param>
+        /// <param name="args">The args (for string formatting).</param>
+        public void LocalizableInfo<TResourceCode>(TResourceCode resourceCode, Exception exception = null, params object[] args)
+            where TResourceCode : struct, IConvertible
         {
-            this.LocalizableLogInternal(LogLevel.Info, resourceSerial, exception, null, null, args);
+            this.LocalizableLogInternal(LogLevel.Info, resourceCode, exception, null, null, args);
         }
 
-        public void LocalizableInfo<T>(T resourceSerial, params object[] args)
-            where T : struct, IConvertible
+        /// <summary>
+        /// Get a localizable info message.
+        /// </summary>
+        /// <typeparam name="TResourceCode">The resource type.</typeparam>
+        /// <param name="resourceCode">The resource code.</param>
+        /// <param name="args">The args (for string formatting).</param>
+        public void LocalizableInfo<TResourceCode>(TResourceCode resourceCode, params object[] args)
+            where TResourceCode : struct, IConvertible
         {
-            this.LocalizableInfo<T>(resourceSerial, null, args);
+            this.LocalizableInfo<TResourceCode>(resourceCode, null, args);
         }
 
-        public void LocalizableDebug<T>(T resourceSerial, Exception exception = null, params object[] args)
-            where T : struct, IConvertible
+        /// <summary>
+        /// Get a localizable debug message.
+        /// </summary>
+        /// <typeparam name="TResourceCode">The resource type.</typeparam>
+        /// <param name="resourceCode">The resource code.</param>
+        /// <param name="exception">The exception.</param>
+        /// <param name="args">The args (for string formatting).</param>
+        public void LocalizableDebug<TResourceCode>(TResourceCode resourceCode, Exception exception = null, params object[] args)
+            where TResourceCode : struct, IConvertible
         {
-            this.LocalizableLogInternal(LogLevel.Debug, resourceSerial, exception, null, null, args);
+            this.LocalizableLogInternal(LogLevel.Debug, resourceCode, exception, null, null, args);
         }
 
-        public void LocalizableDebug<T>(T resourceSerial, params object[] args)
-            where T : struct, IConvertible
+        /// <summary>
+        /// Get a localizable debug message.
+        /// </summary>
+        /// <typeparam name="TResourceCode">The resource type.</typeparam>
+        /// <param name="resourceCode">The resource code.</param>
+        /// <param name="args">The args (for string formatting).</param>
+        public void LocalizableDebug<TResourceCode>(TResourceCode resourceCode, params object[] args)
+            where TResourceCode : struct, IConvertible
         {
-            this.LocalizableDebug<T>(resourceSerial, null, args);
+            this.LocalizableDebug<TResourceCode>(resourceCode, null, args);
         }
 
-        public void LocalizableFatal<T>(T resourceSerial, Exception exception = null, params object[] args)
-            where T : struct, IConvertible
+        /// <summary>
+        /// Get a localizable fatal message.
+        /// </summary>
+        /// <typeparam name="TResourceCode">The resource type.</typeparam>
+        /// <param name="resourceCode">The resource code.</param>
+        /// <param name="exception">The exception.</param>
+        /// <param name="args">The args (for string formatting).</param>
+        public void LocalizableFatal<TResourceCode>(TResourceCode resourceCode, Exception exception = null, params object[] args)
+            where TResourceCode : struct, IConvertible
         {
-            this.LocalizableLogInternal(LogLevel.Fatal, resourceSerial, exception, null, null, args);
+            this.LocalizableLogInternal(LogLevel.Fatal, resourceCode, exception, null, null, args);
         }
 
-        public void LocalizableFatal<T>(T resourceSerial, params object[] args)
-            where T : struct, IConvertible
+        /// <summary>
+        /// Get a localizable fatal message.
+        /// </summary>
+        /// <typeparam name="TResourceCode">The resource type.</typeparam>
+        /// <param name="resourceCode">The resource code.</param>
+        /// <param name="args">The args (for string formatting).</param>
+        public void LocalizableFatal<TResourceCode>(TResourceCode resourceCode, params object[] args)
+            where TResourceCode : struct, IConvertible
         {
-            this.LocalizableFatal<T>(resourceSerial, null, args);
+            this.LocalizableFatal<TResourceCode>(resourceCode, null, args);
         }
 
-        public void LocalizableOff<T>(T resourceSerial, Exception exception = null, params object[] args)
-            where T : struct, IConvertible
+        /// <summary>
+        /// Get a localizable off message.
+        /// </summary>
+        /// <typeparam name="TResourceCode">The resource type.</typeparam>
+        /// <param name="resourceCode">The resource code.</param>
+        /// <param name="exception">The exception.</param>
+        /// <param name="args">The args (for string formatting).</param>
+        public void LocalizableOff<TResourceCode>(TResourceCode resourceCode, Exception exception = null, params object[] args)
+            where TResourceCode : struct, IConvertible
         {
-            this.LocalizableLogInternal(LogLevel.Off, resourceSerial, exception, null, null, args);
+            this.LocalizableLogInternal(LogLevel.Off, resourceCode, exception, null, null, args);
         }
 
-        public void LocalizableOff<T>(T resourceSerial, params object[] args)
-            where T : struct, IConvertible
+        /// <summary>
+        /// Get a localizable off message.
+        /// </summary>
+        /// <typeparam name="TResourceCode">The resource type.</typeparam>
+        /// <param name="resourceCode">The resource code.</param>
+        /// <param name="args">The args (for string formatting).</param>
+        public void LocalizableOff<TResourceCode>(TResourceCode resourceCode, params object[] args)
+            where TResourceCode : struct, IConvertible
         {
-            this.LocalizableOff<T>(resourceSerial, null, args);
+            this.LocalizableOff<TResourceCode>(resourceCode, null, args);
         }
 
-        public void LocalizableTrace<T>(T resourceSerial, Exception exception = null, params object[] args)
-            where T : struct, IConvertible
+        /// <summary>
+        /// Get a localizable trace message.
+        /// </summary>
+        /// <typeparam name="TResourceCode">The resource type.</typeparam>
+        /// <param name="resourceCode">The resource code.</param>
+        /// <param name="exception">The exception.</param>
+        /// <param name="args">The args (for string formatting).</param>
+        public void LocalizableTrace<TResourceCode>(TResourceCode resourceCode, Exception exception = null, params object[] args)
+            where TResourceCode : struct, IConvertible
         {
-            this.LocalizableLogInternal(LogLevel.Trace, resourceSerial, exception, null, null, args);
+            this.LocalizableLogInternal(LogLevel.Trace, resourceCode, exception, null, null, args);
         }
 
-        public void LocalizableTrace<T>(T resourceSerial, params object[] args)
-            where T : struct, IConvertible
+        /// <summary>
+        /// Get a localizable trace message.
+        /// </summary>
+        /// <typeparam name="TResourceCode">The resource type.</typeparam>
+        /// <param name="resourceCode">The resource code.</param>
+        /// <param name="args">The args (for string formatting).</param>
+        public void LocalizableTrace<TResourceCode>(TResourceCode resourceCode, params object[] args)
+            where TResourceCode : struct, IConvertible
         {
-            this.LocalizableTrace<T>(resourceSerial, null, args);
+            this.LocalizableTrace<TResourceCode>(resourceCode, null, args);
         }
 
-        public void LocalizableWarn<T>(T resourceSerial, Exception exception = null, params object[] args)
-            where T : struct, IConvertible
+        /// <summary>
+        /// Get a localizable warn message.
+        /// </summary>
+        /// <typeparam name="TResourceCode">The resource type.</typeparam>
+        /// <param name="resourceCode">The resource code.</param>
+        /// <param name="exception">The exception.</param>
+        /// <param name="args">The args (for string formatting).</param>
+        public void LocalizableWarn<TResourceCode>(TResourceCode resourceCode, Exception exception = null, params object[] args)
+            where TResourceCode : struct, IConvertible
         {
-            this.LocalizableLogInternal(LogLevel.Warn, resourceSerial, exception, null, null, args);
+            this.LocalizableLogInternal(LogLevel.Warn, resourceCode, exception, null, null, args);
         }
 
-        public void LocalizableWarn<T>(T resourceSerial, params object[] args)
-            where T : struct, IConvertible
+        /// <summary>
+        /// Get a localizable warn message.
+        /// </summary>
+        /// <typeparam name="TResourceCode">The resource type.</typeparam>
+        /// <param name="resourceCode">The resource code.</param>
+        /// <param name="args">The args (for string formatting).</param>
+        public void LocalizableWarn<TResourceCode>(TResourceCode resourceCode, params object[] args)
+            where TResourceCode : struct, IConvertible
         {
-            this.LocalizableWarn<T>(resourceSerial, null, args);
+            this.LocalizableWarn<TResourceCode>(resourceCode, null, args);
         }
         #endregion
 
         #region Private methods
-        private void LocalizableLogInternal<T>(LogLevel level, T resourceSerial, Exception exception, DateTime? startDateTime, Stopwatch stopWatch, params object[] args)
-            where T : struct, IConvertible
+        /// <summary>
+        /// The localizable log internal.
+        /// </summary>
+        /// <typeparam name="TResourceCode">The resource type.</typeparam>
+        /// <param name="level">The log level.</param>
+        /// <param name="resourceCode">The resource code.</param>
+        /// <param name="exception">The exception.</param>
+        /// <param name="startDateTime">The start datetime.</param>
+        /// <param name="stopWatch">The stop watch.</param>
+        /// <param name="args">The args (for string formatrting).</param>
+        private void LocalizableLogInternal<TResourceCode>(LogLevel level, TResourceCode resourceCode, Exception exception, DateTime? startDateTime, Stopwatch stopWatch, params object[] args)
+            where TResourceCode : struct, IConvertible
         {
-            if (!typeof(T).IsEnum)
+            if (!typeof(TResourceCode).IsEnum)
                 throw new ArgumentException("");
 
-            if (!this.resourceHandler.IsServerErrorResource<T>(resourceSerial))
+            if (!this.resourceHandler.IsServerErrorResource<TResourceCode>(resourceCode))
                 throw new ArgumentException("");
 
             Task.Run(() =>
             {
-                this.LocalizableLogSubInternal(level, resourceSerial, exception, startDateTime, stopWatch, args);
+                this.LocalizableLogSubInternal(level, resourceCode, exception, startDateTime, stopWatch, args);
             }).ConfigureAwait(false);
         }
-        
-        private void LocalizableLogSubInternal<T>(LogLevel level, T resourceSerial, Exception exception, DateTime? startDateTime, Stopwatch stopWatch, params object[] args)
-            where T : struct, IConvertible
+
+        /// <summary>
+        /// The localizable log sub internal.
+        /// </summary>
+        /// <typeparam name="TResourceCode">The resource type.</typeparam>
+        /// <param name="level">The log level.</param>
+        /// <param name="resourceCode">The resource code.</param>
+        /// <param name="exception">The exception.</param>
+        /// <param name="startDateTime">The start datetime.</param>
+        /// <param name="stopWatch">The stop watch.</param>
+        /// <param name="args">The args (for string formatrting).</param>
+        private void LocalizableLogSubInternal<TResourceCode>(LogLevel level, TResourceCode resourceCode, Exception exception, DateTime? startDateTime, Stopwatch stopWatch, params object[] args)
+            where TResourceCode : struct, IConvertible
         {
             long duration = 0;
             LogEventInfo logEventInfo = null;
@@ -163,23 +279,23 @@ namespace AspieTech.LoggerHandler
             }
 
             // get localized message
-            string message = this.resourceHandler.GetString<T>(resourceSerial, Thread.CurrentThread.CurrentCulture, args);
+            IResourceResult<TResourceCode> resourceItem = this.resourceHandler.GetResourceResult<TResourceCode>(resourceCode, Thread.CurrentThread.CurrentCulture, args);
 
             // create log
             if (exception != null)
             {
-                logEventInfo = LogEventInfo.Create(level, this.Name, exception, null, message);
+                logEventInfo = LogEventInfo.Create(level, this.Name, exception, null, resourceItem.StringContent);
                 logEventInfo.Parameters = args;
             }
             else
             {
-                logEventInfo = LogEventInfo.Create(level, this.Name, null, message, args);
+                logEventInfo = LogEventInfo.Create(level, this.Name, null, resourceItem.StringContent, args);
             }
 
             logEventInfo.Properties.Add("ID", Guid.NewGuid());
-            logEventInfo.Properties.Add("Message", message);
-            logEventInfo.Properties.Add("ResourceType", typeof(T).FullName);
-            logEventInfo.Properties.Add("ResourceSerial", resourceSerial);
+            logEventInfo.Properties.Add("Message", resourceItem.StringContent);
+            logEventInfo.Properties.Add("ResourceType", typeof(TResourceCode).FullName);
+            logEventInfo.Properties.Add("ResourceCode", resourceCode);
             logEventInfo.Properties.Add("Duration", duration);
             base.Log(typeof(LocalizableLogHandler), logEventInfo);
         }

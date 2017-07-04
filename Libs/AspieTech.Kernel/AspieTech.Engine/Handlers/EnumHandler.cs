@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AspieTech.Engine.Handlers
 {
@@ -33,20 +31,20 @@ namespace AspieTech.Engine.Handlers
         #endregion
 
         #region Public methods
-        public static IEnumerable<T> GetValues<T>()
-            where T : struct, IConvertible
+        public static IEnumerable<TEnum> GetValues<TEnum>()
+            where TEnum : struct, IConvertible
         {
             try
             {
-                if (!typeof(T).IsEnum)
+                if (!typeof(TEnum).IsEnum)
                     throw new ArgumentException("Le type T doit être une énumération.");
 
-                IEnumerable<T> items = new List<T>();
+                IEnumerable<TEnum> items = new List<TEnum>();
 
-                foreach (Enum item in Enum.GetValues(typeof(T)))
+                foreach (Enum item in Enum.GetValues(typeof(TEnum)))
                 {
-                    T parsedEnum = (T)(object)item;
-                    items = items.Concat<T>(new[] { parsedEnum });
+                    TEnum parsedEnum = (TEnum)(object)item;
+                    items = items.Concat<TEnum>(new[] { parsedEnum });
                 }
 
                 return items;

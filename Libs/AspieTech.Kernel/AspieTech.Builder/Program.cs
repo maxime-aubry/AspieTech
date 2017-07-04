@@ -1,6 +1,9 @@
 ﻿using AspieTech.BridgeHandler;
-using AspieTech.LocalizationHandler.ResourceSerials;
+using AspieTech.BridgeHandler.LocalizationHandler;
+using AspieTech.LocalizationHandler.ResourceCodes;
+using AspieTech.LoggerHandler;
 using Autofac;
+using System;
 
 namespace AspieTech.Builder
 {
@@ -15,8 +18,10 @@ namespace AspieTech.Builder
                 ILocalizableLogHandler localizableLogHandler = scope.Resolve<ILocalizableLogHandler>();
                 IResourceHandler resourceHandler = scope.Resolve<IResourceHandler>();
 
-                //localizableLogHandler.LocalizableError<EKernelCode>(EKernelCode.x54x5, "test", "azerty");
-                resourceHandler.Export();
+                LocalizableException<ArgumentNullException, EKernelCode> ex = new LocalizableException<ArgumentNullException, EKernelCode>(EKernelCode.SEx1HI324MZLC, resourceHandler);
+
+                //localizableLogHandler.LocalizableError<EKernelCode>(EKernelCode.SEx1HI324MZLC, "test", "azerty");
+                //resourceHandler.Export();
             }
         }
     }

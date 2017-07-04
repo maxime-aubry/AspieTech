@@ -47,7 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\LocalizationUtilityAttribute.cs" />
-    <Compile Include="Attributes\ResourceSerialDetailsAttribute.cs" />
+    <Compile Include="Attributes\ResourceCodeDetailsAttribute.cs" />
     <Compile Include="Enumerations\EResourceType.cs" />
     <Compile Include="Enumerations\ESolutionPart.cs" />
     <Compile Include="i18nResources\AspieTech.Kernel.Designer.cs">
@@ -67,7 +67,9 @@
     </Compile>
     <Compile Include="ResourceHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResourceSerials\EKernelCode.cs" />
+    <Compile Include="ResourceInfo.cs" />
+    <Compile Include="ResourceResult.cs" />
+    <Compile Include="ResourceCodes\EKernelCode.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="i18nResources\AspieTech.Kernel.en.resx">

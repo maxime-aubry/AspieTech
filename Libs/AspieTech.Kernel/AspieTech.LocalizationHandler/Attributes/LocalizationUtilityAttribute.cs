@@ -12,6 +12,11 @@ namespace AspieTech.LocalizationHandler.Attributes
         #endregion
 
         #region Constructors
+        /// <summary>
+        /// The constructor.
+        /// </summary>
+        /// <param name="solution">The solution linked to this resource.</param>
+        /// <param name="resourceType">The resource type.</param>
         public LocalizationUtilityAttribute(ESolution solution, Type resourceType)
         {
             this.solution = solution;
@@ -67,17 +72,18 @@ namespace AspieTech.LocalizationHandler.Attributes
         /// <summary>
         /// Get details provided to this resource.
         /// </summary>
-        /// <typeparam name="T">The resource type.</typeparam>
-        /// <param name="resourceSerial">The resource serial.</param>
+        /// <typeparam name="TResourceCode">The resource type.</typeparam>
+        /// <param name="resourceCode">The resource code.</param>
         /// <returns></returns>
-        public static LocalizationUtilityAttribute GetDetails<T>() where T : struct, IConvertible
+        public static LocalizationUtilityAttribute GetDetails<TResourceCode>()
+            where TResourceCode : struct, IConvertible
         {
             try
             {
-                if (!typeof(T).IsEnum)
+                if (!typeof(TResourceCode).IsEnum)
                     throw new ArgumentException("Le type T doit être une énumération.");
 
-                LocalizationUtilityAttribute localizationUtility = typeof(T).GetCustomAttribute<LocalizationUtilityAttribute>(false);
+                LocalizationUtilityAttribute localizationUtility = typeof(TResourceCode).GetCustomAttribute<LocalizationUtilityAttribute>(false);
 
                 if (localizationUtility == null)
                     throw new NullReferenceException("L'énumération n'est pas un accesseur à des ressources de traduction.");

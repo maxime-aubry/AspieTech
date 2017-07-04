@@ -117,4 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="SEx1HI324MZLC" xml:space="preserve">
+    <value>Provided T type variable must be utility resource for linguistic module.</value>
+  </data>
+  <data name="SExX4J4OSAG2G" xml:space="preserve">
+    <value>Provided T type must be an Enum.</value>
+  </data>
 </root>

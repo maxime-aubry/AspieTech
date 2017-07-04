@@ -1,11 +1,10 @@
-﻿using AspieTech.BridgeHandler;
+﻿using AspieTech.BridgeHandler.LocalizationHandler;
 using AspieTech.Engine.Handlers;
 using AspieTech.LocalizationHandler.Attributes;
 using AspieTech.LocalizationHandler.Enumerations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
@@ -52,20 +51,20 @@ namespace AspieTech.LocalizationHandler
         #endregion
 
         #region Public methods
-        public bool IsUserInterfaceResource<T>(T resourceSerial)
-            where T : struct, IConvertible
+        public bool IsUserInterfaceResource<TResourceCode>(TResourceCode resourceCode)
+            where TResourceCode : struct, IConvertible
         {
             try
             {
-                if (!typeof(T).IsEnum)
-                    throw new ArgumentException("Le type T doit être une énumération.");
+                if (!typeof(TResourceCode).IsEnum)
+                    throw new ArgumentException("Le type TResourceCode doit être une énumération.");
 
-                LocalizationUtilityAttribute localizationUtility = LocalizationUtilityAttribute.GetDetails<T>();
+                LocalizationUtilityAttribute localizationUtility = LocalizationUtilityAttribute.GetDetails<TResourceCode>();
 
                 if (localizationUtility == null)
                     throw new ArgumentException("La type doit être une resource de traduction.");
 
-                ResourceSerialDetailsAttribute details = ResourceSerialDetailsAttribute.GetDetails<T>(resourceSerial);
+                ResourceCodeDetailsAttribute details = ResourceCodeDetailsAttribute.GetDetails<TResourceCode>(resourceCode);
 
                 bool result = (details.SolutionPart == ESolutionPart.UserInterface);
                 return result;
@@ -76,20 +75,20 @@ namespace AspieTech.LocalizationHandler
             }
         }
 
-        public bool IsClientErrorResource<T>(T resourceSerial)
-            where T : struct, IConvertible
+        public bool IsClientErrorResource<TResourceCode>(TResourceCode resourceCode)
+            where TResourceCode : struct, IConvertible
         {
             try
             {
-                if (!typeof(T).IsEnum)
-                    throw new ArgumentException("Le type T doit être une énumération.");
+                if (!typeof(TResourceCode).IsEnum)
+                    throw new ArgumentException("Le type TResourceCode doit être une énumération.");
 
-                LocalizationUtilityAttribute localizationUtility = LocalizationUtilityAttribute.GetDetails<T>();
+                LocalizationUtilityAttribute localizationUtility = LocalizationUtilityAttribute.GetDetails<TResourceCode>();
 
                 if (localizationUtility == null)
                     throw new ArgumentException("La type doit être une resource de traduction.");
 
-                ResourceSerialDetailsAttribute details = ResourceSerialDetailsAttribute.GetDetails<T>(resourceSerial);
+                ResourceCodeDetailsAttribute details = ResourceCodeDetailsAttribute.GetDetails<TResourceCode>(resourceCode);
 
                 bool result = (details.SolutionPart == ESolutionPart.ClientError);
                 return result;
@@ -100,20 +99,20 @@ namespace AspieTech.LocalizationHandler
             }
         }
 
-        public bool IsServerErrorResource<T>(T resourceSerial)
-            where T : struct, IConvertible
+        public bool IsServerErrorResource<TResourceCode>(TResourceCode resourceCode)
+            where TResourceCode : struct, IConvertible
         {
             try
             {
-                if (!typeof(T).IsEnum)
-                    throw new ArgumentException("Le type T doit être une énumération.");
+                if (!typeof(TResourceCode).IsEnum)
+                    throw new ArgumentException("Le type TResourceCode doit être une énumération.");
 
-                LocalizationUtilityAttribute localizationUtility = LocalizationUtilityAttribute.GetDetails<T>();
+                LocalizationUtilityAttribute localizationUtility = LocalizationUtilityAttribute.GetDetails<TResourceCode>();
 
                 if (localizationUtility == null)
                     throw new ArgumentException("La type doit être une resource de traduction.");
 
-                ResourceSerialDetailsAttribute details = ResourceSerialDetailsAttribute.GetDetails<T>(resourceSerial);
+                ResourceCodeDetailsAttribute details = ResourceCodeDetailsAttribute.GetDetails<TResourceCode>(resourceCode);
 
                 bool result = (details.SolutionPart == ESolutionPart.ServerError);
                 return result;
@@ -131,22 +130,40 @@ namespace AspieTech.LocalizationHandler
         /// <param name="resource">The resource serial.</param>
         /// <param name="culture">The user cutlure.</param>
         /// <returns></returns>
-        public string GetString<T>(T resourceSerial, CultureInfo culture, params object[] args)
-            where T : struct, IConvertible
+        public IResourceResult<TResourceCode> GetResourceResult<TResourceCode>(TResourceCode resourceCode, CultureInfo culture, params object[] args)
+            where TResourceCode : struct, IConvertible
         {
             try
             {
-                if (!typeof(T).IsEnum)
-                    throw new ArgumentException("Le type T doit être une énumération.");
+                if (!typeof(TResourceCode).IsEnum)
+                    throw new ArgumentException("Le type TResourceCode doit être une énumération.");
 
-                ResourceManager rm = this.GetResourceManager<T>();
-                string result = rm.GetString(resourceSerial.ToString(), culture);
+                LocalizationUtilityAttribute localizationUtility = LocalizationUtilityAttribute.GetDetails<TResourceCode>();
 
-                if (args != null
+                if (localizationUtility == null)
+                    throw new ArgumentException("");
+
+                ResourceCodeDetailsAttribute details = ResourceCodeDetailsAttribute.GetDetails<TResourceCode>(resourceCode);
+                ResourceManager rm = this.GetResourceManager<TResourceCode>();
+
+                IResourceInfo<TResourceCode> resourceInfo = new ResourceInfo<TResourceCode>(resourceCode, args);
+                IResourceResult<TResourceCode> resourceResult = null;
+
+                // Set result
+                if (details.ResourceType == EResourceType.Object)
+                    resourceResult = new ResourceResult<TResourceCode>(resourceInfo, rm.GetObject(resourceCode.ToString()));
+                if (details.ResourceType == EResourceType.Stream)
+                    resourceResult = new ResourceResult<TResourceCode>(resourceInfo, rm.GetStream(resourceCode.ToString()));
+                if (details.ResourceType == EResourceType.String)
+                    resourceResult = new ResourceResult<TResourceCode>(resourceInfo, rm.GetString(resourceCode.ToString()));
+
+                // Format result
+                if (details.ResourceType == EResourceType.String
+                    && args != null
                     && args.Any())
-                    result = string.Format(result, args);
+                    resourceResult.StringContent = string.Format(resourceResult.StringContent, args);
 
-                return result;
+                return resourceResult;
             }
             catch (Exception e)
             {
@@ -161,7 +178,7 @@ namespace AspieTech.LocalizationHandler
         {
             try
             {
-                IEnumerable<Type> enumerations = this.GetResourceSerialTypes();
+                IEnumerable<Type> enumerations = this.GetResourceCodeTypes();
 
                 Parallel.ForEach(enumerations,
                     enumeration =>
@@ -201,15 +218,15 @@ namespace AspieTech.LocalizationHandler
         /// Get resource manager from a resource serial.
         /// </summary>
         /// <typeparam name="T">The resource Type.</typeparam>
-        /// <param name="resourceSerial">Thez resource serial.</param>
+        /// <param name="resourceCode">Thez resource serial.</param>
         /// <returns></returns>
-        private ResourceManager GetResourceManager<T>()
-            where T : struct, IConvertible
+        private ResourceManager GetResourceManager<TResourceCode>()
+            where TResourceCode : struct, IConvertible
         {
-            if (!typeof(T).IsEnum)
-                throw new ArgumentException("Le type T doit être une énumération.");
+            if (!typeof(TResourceCode).IsEnum)
+                throw new ArgumentException("Le type TResourceCode doit être une énumération.");
 
-            LocalizationUtilityAttribute localizationUtility = LocalizationUtilityAttribute.GetDetails<T>();
+            LocalizationUtilityAttribute localizationUtility = LocalizationUtilityAttribute.GetDetails<TResourceCode>();
             PropertyInfo propertyInfo = localizationUtility.ResourceType.GetProperty("ResourceManager", BindingFlags.Public | BindingFlags.Static);
             ResourceManager resourceManager = propertyInfo.GetValue(null, null) as ResourceManager;
             return resourceManager;
@@ -219,7 +236,7 @@ namespace AspieTech.LocalizationHandler
         /// Get every resource serial type in the project.
         /// </summary>
         /// <returns></returns>
-        private IEnumerable<Type> GetResourceSerialTypes()
+        private IEnumerable<Type> GetResourceCodeTypes()
         {
             try
             {
@@ -249,12 +266,12 @@ namespace AspieTech.LocalizationHandler
         /// </summary>
         /// <param name="resourceManager"></param>
         /// <returns></returns>
-        private JObject SerializeDictionary<T>(ResourceManager resourceManager)
-            where T : struct, IConvertible
+        private JObject SerializeDictionary<TResourceCode>(ResourceManager resourceManager)
+            where TResourceCode : struct, IConvertible
         {
             try
             {
-                IEnumerable<T> resourceSerials = EnumHandler.GetValues<T>();
+                IEnumerable<TResourceCode> resourceCodes = EnumHandler.GetValues<TResourceCode>();
 
                 JObject serializedDictionary = new JObject();
 
@@ -262,12 +279,12 @@ namespace AspieTech.LocalizationHandler
                 {
                     serializedDictionary[culture.TwoLetterISOLanguageName] = new JObject();
                     
-                    foreach (T resourceSerial in resourceSerials)
+                    foreach (TResourceCode resourceCode in resourceCodes)
                     {
-                        if (!this.IsServerErrorResource<T>(resourceSerial))
+                        if (!this.IsServerErrorResource<TResourceCode>(resourceCode))
                         {
-                            string message = resourceManager.GetString(resourceSerial.ToString(), culture);
-                            serializedDictionary[culture.TwoLetterISOLanguageName][resourceSerial.ToString()] = message;
+                            string message = resourceManager.GetString(resourceCode.ToString(), culture);
+                            serializedDictionary[culture.TwoLetterISOLanguageName][resourceCode.ToString()] = message;
                         }
                     }
                 }

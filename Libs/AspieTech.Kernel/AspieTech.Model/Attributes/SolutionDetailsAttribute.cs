@@ -1,10 +1,7 @@
 ﻿using AspieTech.Model.Enumerations;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AspieTech.Model.Attributes
 {
@@ -12,14 +9,16 @@ namespace AspieTech.Model.Attributes
     {
         #region Private properties
         private string name;
-        private string resourceName;
         #endregion
 
         #region Constructors
-        public SolutionDetailsAttribute(string name, string resourceName)
+        /// <summary>
+        /// The constructor.
+        /// </summary>
+        /// <param name="name">The solution name.</param>
+        public SolutionDetailsAttribute(string name)
         {
             this.name = name;
-            this.resourceName = resourceName;
         }
         #endregion
 
@@ -28,6 +27,9 @@ namespace AspieTech.Model.Attributes
         #endregion
 
         #region Getters & Setters
+        /// <summary>
+        /// The solution name.
+        /// </summary>
         public string Name
         {
             get
@@ -37,18 +39,6 @@ namespace AspieTech.Model.Attributes
             set
             {
                 this.name = value;
-            }
-        }
-
-        public string ResourceName
-        {
-            get
-            {
-                return this.resourceName;
-            }
-            set
-            {
-                this.resourceName = value;
             }
         }
         #endregion
@@ -62,6 +52,11 @@ namespace AspieTech.Model.Attributes
         #endregion
 
         #region Public methods
+        /// <summary>
+        /// Get solution details.
+        /// </summary>
+        /// <param name="solution">The solution enumeration.</param>
+        /// <returns></returns>
         public static SolutionDetailsAttribute GetDetails(ESolution solution)
         {
             try

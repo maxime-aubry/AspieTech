@@ -33,20 +33,20 @@ namespace AspieTech.BridgeHandler
         #endregion
 
         #region Public methods
-        void LocalizableError<T>(T resourceSerial, Exception exception = null, params object[] args) where T : struct, IConvertible;
-        void LocalizableError<T>(T resourceSerial, params object[] args) where T : struct, IConvertible;
-        void LocalizableInfo<T>(T resourceSerial, Exception exception = null, params object[] args) where T : struct, IConvertible;
-        void LocalizableInfo<T>(T resourceSerial, params object[] args) where T : struct, IConvertible;
-        void LocalizableDebug<T>(T resourceSerial, Exception exception = null, params object[] args) where T : struct, IConvertible;
-        void LocalizableDebug<T>(T resourceSerial, params object[] args) where T : struct, IConvertible;
-        void LocalizableFatal<T>(T resourceSerial, Exception exception = null, params object[] args) where T : struct, IConvertible;
-        void LocalizableFatal<T>(T resourceSerial, params object[] args) where T : struct, IConvertible;
-        void LocalizableOff<T>(T resourceSerial, Exception exception = null, params object[] args) where T : struct, IConvertible;
-        void LocalizableOff<T>(T resourceSerial, params object[] args) where T : struct, IConvertible;
-        void LocalizableTrace<T>(T resourceSerial, Exception exception = null, params object[] args) where T : struct, IConvertible;
-        void LocalizableTrace<T>(T resourceSerial, params object[] args) where T : struct, IConvertible;
-        void LocalizableWarn<T>(T resourceSerial, Exception exception = null, params object[] args) where T : struct, IConvertible;
-        void LocalizableWarn<T>(T resourceSerial, params object[] args) where T : struct, IConvertible;
+        void LocalizableError<T>(T resourceCode, Exception exception = null, params object[] args) where T : struct, IConvertible;
+        void LocalizableError<T>(T resourceCode, params object[] args) where T : struct, IConvertible;
+        void LocalizableInfo<T>(T resourceCode, Exception exception = null, params object[] args) where T : struct, IConvertible;
+        void LocalizableInfo<T>(T resourceCode, params object[] args) where T : struct, IConvertible;
+        void LocalizableDebug<T>(T resourceCode, Exception exception = null, params object[] args) where T : struct, IConvertible;
+        void LocalizableDebug<T>(T resourceCode, params object[] args) where T : struct, IConvertible;
+        void LocalizableFatal<T>(T resourceCode, Exception exception = null, params object[] args) where T : struct, IConvertible;
+        void LocalizableFatal<T>(T resourceCode, params object[] args) where T : struct, IConvertible;
+        void LocalizableOff<T>(T resourceCode, Exception exception = null, params object[] args) where T : struct, IConvertible;
+        void LocalizableOff<T>(T resourceCode, params object[] args) where T : struct, IConvertible;
+        void LocalizableTrace<T>(T resourceCode, Exception exception = null, params object[] args) where T : struct, IConvertible;
+        void LocalizableTrace<T>(T resourceCode, params object[] args) where T : struct, IConvertible;
+        void LocalizableWarn<T>(T resourceCode, Exception exception = null, params object[] args) where T : struct, IConvertible;
+        void LocalizableWarn<T>(T resourceCode, params object[] args) where T : struct, IConvertible;
         #endregion
 
         #region Private methods
