@@ -12,6 +12,7 @@ namespace AspieTech.LoggerHandler
     {
         #region Private properties
         private IResourceHandler resourceHandler { get; set; }
+        private object locker = new object();
         #endregion
 
         #region Constructors
@@ -246,7 +247,10 @@ namespace AspieTech.LoggerHandler
 
             Task.Run(() =>
             {
-                this.LocalizableLogSubInternal(level, resourceCode, exception, startDateTime, stopWatch, args);
+                lock (this.locker)
+                {
+                    this.LocalizableLogSubInternal<TResourceCode>(level, resourceCode, exception, startDateTime, stopWatch, args);
+                }
             }).ConfigureAwait(false);
         }
 
@@ -264,7 +268,6 @@ namespace AspieTech.LoggerHandler
             where TResourceCode : struct, IConvertible
         {
             long duration = 0;
-            LogEventInfo logEventInfo = null;
 
             // get watch duration
             if (stopWatch != null)
@@ -282,6 +285,7 @@ namespace AspieTech.LoggerHandler
             IResourceResult<TResourceCode> resourceItem = this.resourceHandler.GetResourceResult<TResourceCode>(resourceCode, Thread.CurrentThread.CurrentCulture, args);
 
             // create log
+            LogEventInfo logEventInfo = null;
             if (exception != null)
             {
                 logEventInfo = LogEventInfo.Create(level, this.Name, exception, null, resourceItem.StringContent);
@@ -297,6 +301,7 @@ namespace AspieTech.LoggerHandler
             logEventInfo.Properties.Add("ResourceType", typeof(TResourceCode).FullName);
             logEventInfo.Properties.Add("ResourceCode", resourceCode);
             logEventInfo.Properties.Add("Duration", duration);
+
             base.Log(typeof(LocalizableLogHandler), logEventInfo);
         }
         #endregion

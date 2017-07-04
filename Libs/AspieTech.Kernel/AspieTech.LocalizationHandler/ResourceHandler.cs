@@ -19,7 +19,7 @@ namespace AspieTech.LocalizationHandler
     public class ResourceHandler : IResourceHandler
     {
         #region Private properties
-        private Object locker = new Object();
+        private object locker = new object();
         private IEnumerable<CultureInfo> cultures;
         #endregion
 
