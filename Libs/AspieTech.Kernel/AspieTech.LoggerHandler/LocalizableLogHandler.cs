@@ -16,10 +16,10 @@ namespace AspieTech.LoggerHandler
         #endregion
 
         #region Constructors
-        public LocalizableLogHandler(IResourceHandler resourceHandler)
+        public LocalizableLogHandler()
             : base()
         {
-            this.resourceHandler = resourceHandler;
+
         }
         #endregion
 
@@ -28,7 +28,17 @@ namespace AspieTech.LoggerHandler
         #endregion
 
         #region Getters & Setters
-
+        public IResourceHandler ResourceHandler
+        {
+            get
+            {
+                return this.resourceHandler;
+            }
+            private set
+            {
+                this.resourceHandler = value;
+            }
+        }
         #endregion
 
         #region Delegates
@@ -44,9 +54,11 @@ namespace AspieTech.LoggerHandler
         /// Get localized logger.
         /// </summary>
         /// <returns></returns>
-        public static LocalizableLogHandler GetCurrentLocalizedLogger()
+        public static LocalizableLogHandler GetCurrentLocalizedLogger(IResourceHandler resourceHandler)
         {
-            return (LocalizableLogHandler)LogManager.GetCurrentClassLogger(typeof(LocalizableLogHandler));
+            LocalizableLogHandler logger = (LocalizableLogHandler)LogManager.GetCurrentClassLogger(typeof(LocalizableLogHandler));
+            logger.resourceHandler = resourceHandler;
+            return logger;
         }
 
         /// <summary>

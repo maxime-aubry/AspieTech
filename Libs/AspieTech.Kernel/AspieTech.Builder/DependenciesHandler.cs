@@ -15,7 +15,7 @@ namespace AspieTech.Builder
         {
             // dependendies
             IResourceHandler resourceHandler = new ResourceHandler();
-            ILocalizableLogHandler localizableLogHandler = new LocalizableLogHandler(resourceHandler);
+            ILocalizableLogHandler localizableLogHandler = LocalizableLogHandler.GetCurrentLocalizedLogger(resourceHandler);
 
             // builder
             ContainerBuilder builder = new ContainerBuilder();

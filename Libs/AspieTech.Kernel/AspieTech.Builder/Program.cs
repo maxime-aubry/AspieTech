@@ -34,6 +34,8 @@ namespace AspieTech.Builder
 
                 localizableLogHandler.LocalizableError<EKernelCode>(EKernelCode.SEx1HI324MZLC);
                 //resourceHandler.Export();
+
+                Console.Read();
             }
         }
     }
