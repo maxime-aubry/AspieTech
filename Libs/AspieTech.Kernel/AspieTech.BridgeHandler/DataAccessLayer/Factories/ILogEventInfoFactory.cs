@@ -1,10 +1,6 @@
-﻿using System;
-using System.IO;
-
-namespace AspieTech.BridgeHandler.LocalizationHandler
+﻿namespace AspieTech.BridgeHandler.DataAccessLayer.Factories
 {
-    public interface IResourceInfo<TResourceCode>
-        where TResourceCode : struct, IConvertible
+    public interface ILogEventInfoFactory : IFactory
     {
         #region Private properties
 
@@ -19,9 +15,7 @@ namespace AspieTech.BridgeHandler.LocalizationHandler
         #endregion
 
         #region Getters & Setters
-        Type ResourceType { get; set; }
-        TResourceCode ResourceCode { get; set; }
-        object[] Args { get; set; }
+
         #endregion
 
         #region Delegates
@@ -33,7 +27,7 @@ namespace AspieTech.BridgeHandler.LocalizationHandler
         #endregion
 
         #region Public methods
-
+        void Insert<TLogEventInfo>(TLogEventInfo logEventInfo);
         #endregion
 
         #region Private methods

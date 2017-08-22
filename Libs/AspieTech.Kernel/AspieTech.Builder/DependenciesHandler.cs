@@ -1,5 +1,5 @@
-﻿using AspieTech.BridgeHandler;
-using AspieTech.BridgeHandler.LocalizationHandler;
+﻿using AspieTech.BridgeHandler.LocalizationHandler;
+using AspieTech.BridgeHandler.LoggerHandler;
 using AspieTech.LocalizationHandler;
 using AspieTech.LoggerHandler;
 using Autofac;

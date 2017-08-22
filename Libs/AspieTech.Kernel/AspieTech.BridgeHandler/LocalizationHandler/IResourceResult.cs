@@ -4,7 +4,6 @@ using System.IO;
 namespace AspieTech.BridgeHandler.LocalizationHandler
 {
     public interface IResourceResult<TResourceCode>
-        where TResourceCode : struct, IConvertible
     {
         #region Private properties
 
@@ -19,7 +18,10 @@ namespace AspieTech.BridgeHandler.LocalizationHandler
         #endregion
 
         #region Getters & Setters
-        IResourceInfo<TResourceCode> ResourceInfo { get; set; }
+        object LocalizationUtility { get; set; }
+        object ResourceCodeDetails { get; set; }
+        TResourceCode ResourceCode { get; set; }
+        object[] Args { get; set; }
         object ObjectContent { get; set; }
         Stream StreamContent { get; set; }
         string StringContent { get; set; }

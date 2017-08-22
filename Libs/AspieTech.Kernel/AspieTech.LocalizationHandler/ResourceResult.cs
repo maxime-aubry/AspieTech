@@ -1,4 +1,5 @@
 ﻿using AspieTech.BridgeHandler.LocalizationHandler;
+using AspieTech.LocalizationHandler.Attributes;
 using System;
 using System.IO;
 
@@ -8,7 +9,10 @@ namespace AspieTech.LocalizationHandler
         where TResourceCode : struct, IConvertible
     {
         #region Private properties
-        private IResourceInfo<TResourceCode> resourceInfo;
+        private object localizationUtility;
+        private object resourceCodeDetails;
+        private TResourceCode resourceCode;
+        private object[] args;
         private object objectContent;
         private Stream streamContent;
         private string stringContent;
@@ -20,25 +24,33 @@ namespace AspieTech.LocalizationHandler
 
         }
 
-        public ResourceResult(IResourceInfo<TResourceCode> resourceInfo, object objectContent)
+        public ResourceResult(object localizationUtility, object resourceCodeDetails, TResourceCode resourceCode)
+            : this()
         {
-            this.resourceInfo = resourceInfo;
+            this.localizationUtility = localizationUtility;
+            this.resourceCodeDetails = resourceCodeDetails;
+            this.resourceCode = resourceCode;
+        }
+
+        public ResourceResult(object localizationUtility, object resourceCodeDetails, TResourceCode resourceCode, object objectContent)
+            : this(localizationUtility, resourceCodeDetails, resourceCode)
+        {
             this.objectContent = objectContent;
             this.streamContent = null;
             this.stringContent = null;
         }
 
-        public ResourceResult(IResourceInfo<TResourceCode> resourceInfo, Stream streamContent)
+        public ResourceResult(object localizationUtility, object resourceCodeDetails, TResourceCode resourceCode, Stream streamContent)
+            : this(localizationUtility, resourceCodeDetails, resourceCode)
         {
-            this.resourceInfo = resourceInfo;
             this.objectContent = null;
             this.streamContent = streamContent;
             this.stringContent = null;
         }
 
-        public ResourceResult(IResourceInfo<TResourceCode> resourceInfo, string stringContent)
+        public ResourceResult(object localizationUtility, object resourceCodeDetails, TResourceCode resourceCode, string stringContent, object[] args)
+            : this(localizationUtility, resourceCodeDetails, resourceCode)
         {
-            this.resourceInfo = resourceInfo;
             this.objectContent = null;
             this.streamContent = null;
             this.stringContent = stringContent;
@@ -50,52 +62,46 @@ namespace AspieTech.LocalizationHandler
         #endregion
 
         #region Getters & Setters
-        public IResourceInfo<TResourceCode> ResourceInfo
+        public object LocalizationUtility
         {
-            get
-            {
-                return this.resourceInfo;
-            }
-            set
-            {
-                this.resourceInfo = value;
-            }
+            get { return this.localizationUtility; }
+            set { this.localizationUtility = value; }
+        }
+
+        public object ResourceCodeDetails
+        {
+            get { return this.resourceCodeDetails; }
+            set { this.resourceCodeDetails = value; }
+        }
+
+        public TResourceCode ResourceCode
+        {
+            get { return this.resourceCode; }
+            set { this.resourceCode = value; }
+        }
+
+        public object[] Args
+        {
+            get { return this.args; }
+            set { this.args = value; }
         }
 
         public object ObjectContent
         {
-            get
-            {
-                return this.objectContent;
-            }
-            set
-            {
-                this.objectContent = value;
-            }
+            get { return this.objectContent; }
+            set { this.objectContent = value; }
         }
 
         public Stream StreamContent
         {
-            get
-            {
-                return this.streamContent;
-            }
-            set
-            {
-                this.streamContent = value;
-            }
+            get { return this.streamContent; }
+            set { this.streamContent = value; }
         }
 
         public string StringContent
         {
-            get
-            {
-                return this.stringContent;
-            }
-            set
-            {
-                this.stringContent = value;
-            }
+            get { return this.stringContent; }
+            set { this.stringContent = value; }
         }
         #endregion
 

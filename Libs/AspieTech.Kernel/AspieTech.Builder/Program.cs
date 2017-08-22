@@ -1,10 +1,10 @@
-﻿using AspieTech.BridgeHandler;
-using AspieTech.BridgeHandler.LocalizationHandler;
+﻿using AspieTech.BridgeHandler.LocalizationHandler;
+using AspieTech.BridgeHandler.LoggerHandler;
 using AspieTech.LocalizationHandler.ResourceCodes;
 using AspieTech.LoggerHandler;
 using Autofac;
-using NLog;
 using System;
+using System.Threading;
 
 namespace AspieTech.Builder
 {
@@ -18,22 +18,16 @@ namespace AspieTech.Builder
             {
                 ILocalizableLogHandler localizableLogHandler = scope.Resolve<ILocalizableLogHandler>();
                 IResourceHandler resourceHandler = scope.Resolve<IResourceHandler>();
-
-                //LocalizableException<ArgumentNullException, EKernelCode> ex = new LocalizableException<ArgumentNullException, EKernelCode>(EKernelCode.SEx1HI324MZLC, resourceHandler);
-
-                //try
-                //{
-                //    int zero = 0;
-                //    int result = 5 / zero;
-                //}
-                //catch (DivideByZeroException e)
-                //{
-                //    Logger logger = LogManager.GetCurrentClassLogger();
-                //    logger.ErrorException("test", e);
-                //}
-
-                localizableLogHandler.LocalizableError<EKernelCode>(EKernelCode.SEx1HI324MZLC);
-                //resourceHandler.Export();
+                
+                try
+                {
+                    NullReferenceException exception = localizableLogHandler.ProvideException<NullReferenceException, EKernelCode>(EKernelCode.SEx1HI324MZLC);
+                    throw exception;
+                }
+                catch (Exception e)
+                {
+                    localizableLogHandler.LocalizableError(e);
+                }
 
                 Console.Read();
             }

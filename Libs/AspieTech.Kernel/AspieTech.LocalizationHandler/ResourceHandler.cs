@@ -143,22 +143,21 @@ namespace AspieTech.LocalizationHandler
                 if (localizationUtility == null)
                     throw new ArgumentException("");
 
-                ResourceCodeDetailsAttribute details = ResourceCodeDetailsAttribute.GetDetails<TResourceCode>(resourceCode);
+                ResourceCodeDetailsAttribute resourceCodeDetails = ResourceCodeDetailsAttribute.GetDetails<TResourceCode>(resourceCode);
                 ResourceManager rm = this.GetResourceManager<TResourceCode>();
 
-                IResourceInfo<TResourceCode> resourceInfo = new ResourceInfo<TResourceCode>(resourceCode, args);
                 IResourceResult<TResourceCode> resourceResult = null;
 
                 // Set result
-                if (details.ResourceType == EResourceType.Object)
-                    resourceResult = new ResourceResult<TResourceCode>(resourceInfo, rm.GetObject(resourceCode.ToString()));
-                if (details.ResourceType == EResourceType.Stream)
-                    resourceResult = new ResourceResult<TResourceCode>(resourceInfo, rm.GetStream(resourceCode.ToString()));
-                if (details.ResourceType == EResourceType.String)
-                    resourceResult = new ResourceResult<TResourceCode>(resourceInfo, rm.GetString(resourceCode.ToString()));
-
+                if (resourceCodeDetails.ResourceType == EResourceType.Object)
+                    resourceResult = new ResourceResult<TResourceCode>(localizationUtility, resourceCodeDetails, resourceCode, rm.GetObject(resourceCode.ToString()));
+                if (resourceCodeDetails.ResourceType == EResourceType.Stream)
+                    resourceResult = new ResourceResult<TResourceCode>(localizationUtility, resourceCodeDetails, resourceCode, rm.GetStream(resourceCode.ToString()));
+                if (resourceCodeDetails.ResourceType == EResourceType.String)
+                    resourceResult = new ResourceResult<TResourceCode>(localizationUtility, resourceCodeDetails, resourceCode, rm.GetString(resourceCode.ToString()), args);
+                
                 // Format result
-                if (details.ResourceType == EResourceType.String
+                if (resourceCodeDetails.ResourceType == EResourceType.String
                     && args != null
                     && args.Any())
                     resourceResult.StringContent = string.Format(resourceResult.StringContent, args);

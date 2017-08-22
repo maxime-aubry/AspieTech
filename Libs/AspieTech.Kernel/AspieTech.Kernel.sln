@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspieTech.Engine", "AspieTe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspieTech.BridgeHandler", "AspieTech.BridgeHandler\AspieTech.BridgeHandler.csproj", "{7597E308-DD94-4518-A354-2884F2118BA9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspieTech.BusinessLogicLayer", "AspieTech.BusinessLogicLayer\AspieTech.BusinessLogicLayer.csproj", "{D3E08243-00BE-4D1A-909A-2D30AB348F70}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspieTech.DataAccessLayer", "AspieTech.DataAccessLayer\AspieTech.DataAccessLayer.csproj", "{8001E3B3-6AD6-4778-A82C-F63FB4665809}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +75,22 @@ Global
 		{7597E308-DD94-4518-A354-2884F2118BA9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7597E308-DD94-4518-A354-2884F2118BA9}.Release|x64.ActiveCfg = Release|Any CPU
 		{7597E308-DD94-4518-A354-2884F2118BA9}.Release|x64.Build.0 = Release|Any CPU
+		{D3E08243-00BE-4D1A-909A-2D30AB348F70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3E08243-00BE-4D1A-909A-2D30AB348F70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3E08243-00BE-4D1A-909A-2D30AB348F70}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D3E08243-00BE-4D1A-909A-2D30AB348F70}.Debug|x64.Build.0 = Debug|Any CPU
+		{D3E08243-00BE-4D1A-909A-2D30AB348F70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3E08243-00BE-4D1A-909A-2D30AB348F70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3E08243-00BE-4D1A-909A-2D30AB348F70}.Release|x64.ActiveCfg = Release|Any CPU
+		{D3E08243-00BE-4D1A-909A-2D30AB348F70}.Release|x64.Build.0 = Release|Any CPU
+		{8001E3B3-6AD6-4778-A82C-F63FB4665809}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8001E3B3-6AD6-4778-A82C-F63FB4665809}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8001E3B3-6AD6-4778-A82C-F63FB4665809}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8001E3B3-6AD6-4778-A82C-F63FB4665809}.Debug|x64.Build.0 = Debug|Any CPU
+		{8001E3B3-6AD6-4778-A82C-F63FB4665809}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8001E3B3-6AD6-4778-A82C-F63FB4665809}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8001E3B3-6AD6-4778-A82C-F63FB4665809}.Release|x64.ActiveCfg = Release|Any CPU
+		{8001E3B3-6AD6-4778-A82C-F63FB4665809}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
