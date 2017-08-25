@@ -34,14 +34,8 @@ namespace AspieTech.LocalizationHandler.Attributes
         /// </summary>
         public ESolution Solution
         {
-            get
-            {
-                return this.solution;
-            }
-            set
-            {
-                this.solution = value;
-            }
+            get { return this.solution; }
+            set { this.solution = value; }
         }
 
         /// <summary>
@@ -49,14 +43,8 @@ namespace AspieTech.LocalizationHandler.Attributes
         /// </summary>
         public Type ResourceType
         {
-            get
-            {
-                return this.resourceType;
-            }
-            set
-            {
-                this.resourceType = value;
-            }
+            get { return this.resourceType; }
+            set { this.resourceType = value; }
         }
         #endregion
 

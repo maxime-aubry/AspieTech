@@ -4,12 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7597E308-DD94-4518-A354-2884F2118BA9}</ProjectGuid>
+    <ProjectGuid>{53FF3433-E824-483A-9FE5-49BE94819E85}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AspieTech.BridgeHandler</RootNamespace>
-    <AssemblyName>AspieTech.BridgeHandler</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <RootNamespace>AspieTech.CAA.Engine</RootNamespace>
+    <AssemblyName>AspieTech.CAA.Engine</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -40,19 +40,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataAccessLayer\Entities\ILogEventInfoEntity.cs" />
-    <Compile Include="DataAccessLayer\ICAAFactoryContainer.cs" />
-    <Compile Include="DataAccessLayer\IFactory.cs" />
-    <Compile Include="DataAccessLayer\IFactoryContainer.cs" />
-    <Compile Include="DataAccessLayer\Factories\ILogEventInfoFactory.cs" />
-    <Compile Include="Engine\Vaillant\IRestProxyCredential.cs" />
-    <Compile Include="LoggerHandler\ILocalizableLogHandler.cs" />
-    <Compile Include="LocalizationHandler\IResourceHandler.cs" />
-    <Compile Include="LocalizationHandler\IResourceResult.cs" />
+    <Compile Include="Attributes\AccessRightUtilityAttribute.cs" />
+    <Compile Include="Handlers\AccessRightHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="BusinessLogicLayer\Entities\" />
+    <Folder Include="AccessRights\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\AspieTech.Kernel\AspieTech.Model\AspieTech.Model.csproj">
+      <Project>{e7bf3346-b7de-4dbc-ab42-d17e148d3b1d}</Project>
+      <Name>AspieTech.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

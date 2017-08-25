@@ -32,14 +32,8 @@ namespace AspieTech.Model.Attributes
         /// </summary>
         public string Name
         {
-            get
-            {
-                return this.name;
-            }
-            set
-            {
-                this.name = value;
-            }
+            get { return this.name; }
+            set { this.name = value; }
         }
         #endregion
 
