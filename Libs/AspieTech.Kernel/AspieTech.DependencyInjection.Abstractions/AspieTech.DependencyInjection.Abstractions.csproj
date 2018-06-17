@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Localization\Models\" />
+    <Folder Include="Localization\Enumerations\" />
+    <Folder Include="Logger.DataAccessLayer\Enumerations\" />
+    <Folder Include="Logger.DataAccessLayer\Models\" />
+    <Folder Include="Logger\Enumerations\" />
+    <Folder Include="Logger\Models\" />
+  </ItemGroup>
+
+</Project>

@@ -1,35 +1,31 @@
-﻿using AspieTech.BridgeHandler.LocalizationHandler;
-using AspieTech.BridgeHandler.LoggerHandler;
-using AspieTech.LocalizationHandler.ResourceCodes;
-using AspieTech.LoggerHandler;
-using Autofac;
+﻿using AspieTech.Builder.ResourceCodes;
+using AspieTech.DependencyInjection;
+using AspieTech.DependencyInjection.Abstractions.Localization.Interfaces;
+using AspieTech.DependencyInjection.Interfaces;
+using AspieTech.Logger.DataAccessLayer;
+using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Threading;
+using System.Globalization;
 
 namespace AspieTech.Builder
 {
-    public class Program
+    class Program
     {
         static void Main(string[] args)
         {
-            DependenciesHandler.Configure();
-
-            using (ILifetimeScope scope = DependenciesHandler.Container.BeginLifetimeScope())
+            using (DependencyInjectionServices dis = DependencyInjectionHandler.ServiceProvider.GetService<DependencyInjectionServices>())
             {
-                ILocalizableLogHandler localizableLogHandler = scope.Resolve<ILocalizableLogHandler>();
-                IResourceHandler resourceHandler = scope.Resolve<IResourceHandler>();
-                
+                IResourceResult<EBuilderCode> res = dis.ResourceHandler.GetResourceResult<EBuilderCode>(EBuilderCode.azerty, CultureInfo.CurrentCulture);
+
                 try
                 {
-                    NullReferenceException exception = localizableLogHandler.ProvideException<NullReferenceException, EKernelCode>(EKernelCode.SEx1HI324MZLC);
+                    NullReferenceException exception = dis.LocalizableLogHandler.ProvideException<NullReferenceException, EBuilderCode>(EBuilderCode.azerty);
                     throw exception;
                 }
                 catch (Exception e)
                 {
-                    localizableLogHandler.LocalizableError(e);
+                    dis.LocalizableLogHandler.LocalizableError(e);
                 }
-
-                Console.Read();
             }
         }
     }

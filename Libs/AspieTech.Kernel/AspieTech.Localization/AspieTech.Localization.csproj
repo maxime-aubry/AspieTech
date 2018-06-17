@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\AspieTech.Utils.Enums\AspieTech.Utils.Enums\AspieTech.Utils.Enums.csproj" />
+    <ProjectReference Include="..\AspieTech.DependencyInjection.Abstractions\AspieTech.DependencyInjection.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>
