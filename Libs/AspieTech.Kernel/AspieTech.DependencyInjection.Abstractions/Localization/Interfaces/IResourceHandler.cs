@@ -34,11 +34,12 @@ namespace AspieTech.DependencyInjection.Abstractions.Localization.Interfaces
         bool IsClientErrorResource<TResourceCode>(TResourceCode resourceCode) where TResourceCode : struct, IConvertible;
         bool IsServerErrorResource<TResourceCode>(TResourceCode resourceCode) where TResourceCode : struct, IConvertible;
         IResourceResult<TResourceCode> GetResourceResult<TResourceCode>(TResourceCode resourceCode, CultureInfo culture, params object[] args) where TResourceCode : struct, IConvertible;
-        void Export();
+        void SetResourceResult<TResourceCode>(TResourceCode resourceCode, CultureInfo culture, string filename) where TResourceCode : struct, IConvertible;
+        void Export<TResourceCode>(string path) where TResourceCode : struct, IConvertible;
         #endregion
 
-        #region Private methods
+            #region Private methods
 
-        #endregion
+            #endregion
     }
 }

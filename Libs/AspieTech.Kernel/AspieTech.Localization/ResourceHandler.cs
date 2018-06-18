@@ -2,10 +2,12 @@
 using AspieTech.Localization.Attributes;
 using AspieTech.Localization.Enumerations;
 using AspieTech.Utils.Enums;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
@@ -167,40 +169,40 @@ namespace AspieTech.Localization
             }
         }
 
-        /// <summary>
-        /// Export each dictionary into a Json file.
-        /// </summary>
-        public void Export()
+        public void SetResourceResult<TResourceCode>(TResourceCode resourceCode, CultureInfo culture, string filename)
+            where TResourceCode : struct, IConvertible
         {
             try
             {
-                IEnumerable<Type> enumerations = this.GetResourceCodeTypes();
+                if (!typeof(TResourceCode).IsEnum)
+                    throw new ArgumentException("Le type TResourceCode doit être une énumération.");
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
 
-                Parallel.ForEach(enumerations,
-                    enumeration =>
-                    {
-                        lock (this.locker)
-                        {
-                            // get resource manager
-                            ResourceManager resourceManager = null;
-                            {
-                                MethodInfo method = typeof(ResourceHandler).GetMethod("GetResourceManager", BindingFlags.NonPublic | BindingFlags.Instance);
-                                MethodInfo genericMethod = method.MakeGenericMethod(enumeration);
-                                resourceManager = genericMethod.Invoke(this, null) as ResourceManager;
-                            }
+        /// <summary>
+        /// Export each dictionary into a Json file.
+        /// </summary>
+        /// <typeparam name="TResourceCode">The resource code</typeparam>
+        /// <param name="path">the path of json file</param>
+        public void Export<TResourceCode>(string filename)
+            where TResourceCode : struct, IConvertible
+        {
+            try
+            {
+                if (!typeof(TResourceCode).IsEnum)
+                    throw new ArgumentException("Le type TResourceCode doit être une énumération.");
 
-                            // serializing
-                            JObject serializedDictionary = null;
-                            {
-                                MethodInfo method = typeof(ResourceHandler).GetMethod("SerializeDictionary", BindingFlags.NonPublic | BindingFlags.Instance);
-                                MethodInfo genericMethod = method.MakeGenericMethod(enumeration);
-                                serializedDictionary = genericMethod.Invoke(this, new object[] { resourceManager }) as JObject;
-                            }
+                ResourceManager rm = this.GetResourceManager<TResourceCode>();
+                JObject serializedDictionary = this.SerializeDictionary<TResourceCode>(rm);
 
-                            // saving
-                            this.SaveDictionary(enumeration.Name + ".json", serializedDictionary);
-                        }
-                    });
+                using (StreamWriter outputFile = new StreamWriter(filename))
+                {
+                    outputFile.Write(serializedDictionary.ToString(Formatting.Indented));
+                }
             }
             catch (Exception e)
             {
@@ -229,85 +231,31 @@ namespace AspieTech.Localization
         }
 
         /// <summary>
-        /// Get every resource serial type in the project.
-        /// </summary>
-        /// <returns></returns>
-        private IEnumerable<Type> GetResourceCodeTypes()
-        {
-            try
-            {
-                IEnumerable<Type> types = new List<Type>();
-
-                foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
-                {
-                    foreach (Type type in assembly.GetTypes())
-                    {
-                        LocalizationUtilityAttribute localizationUtility = type.GetCustomAttribute<LocalizationUtilityAttribute>();
-
-                        if (localizationUtility != null)
-                            types = types.Concat(new[] { type });
-                    }
-                }
-
-                return types;
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-        }
-        
-        /// <summary>
         /// Serialize dictionary.
         /// </summary>
-        /// <param name="resourceManager"></param>
+        /// <param name="resourceManager">the resource manager</param>
         /// <returns></returns>
         private JObject SerializeDictionary<TResourceCode>(ResourceManager resourceManager)
             where TResourceCode : struct, IConvertible
         {
             try
             {
-                //IEnumerable<TResourceCode> resourceCodes = EnumHandler.GetValues<TResourceCode>();
-
                 JObject serializedDictionary = new JObject();
 
-                //foreach (CultureInfo culture in this.cultures)
-                //{
-                //    serializedDictionary[culture.TwoLetterISOLanguageName] = new JObject();
-                    
-                //    foreach (TResourceCode resourceCode in resourceCodes)
-                //    {
-                //        if (!this.IsServerErrorResource<TResourceCode>(resourceCode))
-                //        {
-                //            string message = resourceManager.GetString(resourceCode.ToString(), culture);
-                //            serializedDictionary[culture.TwoLetterISOLanguageName][resourceCode.ToString()] = message;
-                //        }
-                //    }
-                //}
-                
+                foreach (CultureInfo culture in this.cultures)
+                {
+                    serializedDictionary[culture.TwoLetterISOLanguageName] = new JObject();
+
+                    IEnumerable<TResourceCode> resourceCodes = EnumHandler.GetValues<TResourceCode>().Where(rc => !this.IsServerErrorResource<TResourceCode>(rc));
+
+                    foreach (TResourceCode resourceCode in resourceCodes)
+                    {
+                        string message = resourceManager.GetString(resourceCode.ToString(), culture);
+                        serializedDictionary[culture.TwoLetterISOLanguageName][resourceCode.ToString()] = message;
+                    }
+                }
+
                 return serializedDictionary;
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-        }
-
-        /// <summary>
-        /// Saves the serialized dictionary into a Json file.
-        /// </summary>
-        /// <param name="filename">The file name.</param>
-        /// <param name="dictionary">The dictionary so save.</param>
-        private void SaveDictionary(string filename, JObject dictionary)
-        {
-            try
-            {
-                //string path = Path.Combine(ConfigurationManager.AppSettings["i181JsonResourcesPath"], filename);
-
-                //using (StreamWriter outputFile = new StreamWriter(path))
-                //{
-                //    outputFile.Write(dictionary.ToString(Formatting.Indented));
-                //}
             }
             catch (Exception e)
             {

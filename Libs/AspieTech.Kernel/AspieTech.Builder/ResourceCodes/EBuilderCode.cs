@@ -7,6 +7,8 @@ namespace AspieTech.Builder.ResourceCodes
     public enum EBuilderCode
     {
         [ResourceCodeDetails(ESolutionPart.ServerError, EResourceType.String)]
-        azerty
+        azerty,
+        [ResourceCodeDetails(ESolutionPart.UserInterface, EResourceType.String)]
+        ytreza
     }
 }
