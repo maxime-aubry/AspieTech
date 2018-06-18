@@ -287,3 +287,5 @@ __pycache__/
 *.odx.cs
 *.xsd.cs
 /Libs/SharedSuff/i18nJsonResources
+/Libs/SharedSuff
+SharedSuff
