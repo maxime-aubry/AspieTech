@@ -1,5 +1,6 @@
 ﻿using System;
 using AspieTech.DependencyInjection.Abstractions.Localization.Interfaces;
+using AspieTech.DependencyInjection.Abstractions.Repository;
 
 namespace AspieTech.DependencyInjection.Abstractions.Logger.Interfaces
 {

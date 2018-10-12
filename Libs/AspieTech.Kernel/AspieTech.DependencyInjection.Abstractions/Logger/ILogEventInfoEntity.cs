@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AspieTech.DependencyInjection.Abstractions.Logger.DataAccessLayer.Interfaces.Entities
+namespace AspieTech.DependencyInjection.Abstractions.Logger
 {
     public interface ILogEventInfoEntity
     {

@@ -1,16 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Localization\Models\" />
-    <Folder Include="Localization\Enumerations\" />
-    <Folder Include="Logger.DataAccessLayer\Enumerations\" />
-    <Folder Include="Logger.DataAccessLayer\Models\" />
-    <Folder Include="Logger\Enumerations\" />
-    <Folder Include="Logger\Models\" />
+    <Compile Remove="Localization\Enumerations\**" />
+    <Compile Remove="Localization\Models\**" />
+    <Compile Remove="Logger\Enumerations\**" />
+    <Compile Remove="Logger\Models\**" />
+    <EmbeddedResource Remove="Localization\Enumerations\**" />
+    <EmbeddedResource Remove="Localization\Models\**" />
+    <EmbeddedResource Remove="Logger\Enumerations\**" />
+    <EmbeddedResource Remove="Logger\Models\**" />
+    <None Remove="Localization\Enumerations\**" />
+    <None Remove="Localization\Models\**" />
+    <None Remove="Logger\Enumerations\**" />
+    <None Remove="Logger\Models\**" />
   </ItemGroup>
 
 </Project>

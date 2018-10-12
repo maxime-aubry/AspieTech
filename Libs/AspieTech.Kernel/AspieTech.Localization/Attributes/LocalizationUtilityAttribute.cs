@@ -1,10 +1,13 @@
 ﻿using System;
-using System.Reflection;
 
 namespace AspieTech.Localization.Attributes
 {
     public class LocalizationUtilityAttribute : Attribute, ILocalizationUtilityAttribute
     {
+        #region Public properties
+        
+        #endregion
+
         #region Private properties
         private Type resourceManagerType;
         #endregion

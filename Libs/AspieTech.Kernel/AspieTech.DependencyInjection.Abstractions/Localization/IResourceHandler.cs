@@ -1,10 +1,15 @@
-﻿using System;
+﻿using AspieTech.DependencyInjection.Abstractions.Logger.Interfaces;
+using System;
 using System.Globalization;
 
 namespace AspieTech.DependencyInjection.Abstractions.Localization.Interfaces
 {
     public interface IResourceHandler
     {
+        #region Public properties
+        ILocalizableLogHandler LocalizableLogHandler { get; set; }
+        #endregion
+
         #region Private properties
 
         #endregion
@@ -38,7 +43,7 @@ namespace AspieTech.DependencyInjection.Abstractions.Localization.Interfaces
         void Export<TResourceCode>(string path) where TResourceCode : struct, IConvertible;
         #endregion
 
-            #region Private methods
+        #region Private methods
 
             #endregion
     }

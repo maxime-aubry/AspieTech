@@ -1,5 +1,7 @@
 ﻿using AspieTech.DependencyInjection.Abstractions.Localization.Interfaces;
 using AspieTech.DependencyInjection.Abstractions.Logger.Interfaces;
+using AspieTech.DependencyInjection.Abstractions.Repository;
+using AspieTech.Logger.BusinessLogicLayer;
 using Microsoft.Win32.SafeHandles;
 using NLog;
 using System;
@@ -13,7 +15,13 @@ namespace AspieTech.Logger.DataAccessLayer
 {
     public class LocalizableLogHandler : NLog.Logger, ILocalizableLogHandler, IDisposable
     {
+        #region Public properties
+        public IResourceHandler ResourceHandler { get; set; }
+        #endregion
+
         #region Private properties
+        private IRepository repository { get; set; }
+        private DbLoggerBLL dbLogger { get; set; }
         private object locker = new object();
         private const string resourceCodeType = "ResourceCodeType";
         private const string resourceCode = "ResourceCode";
@@ -35,7 +43,7 @@ namespace AspieTech.Logger.DataAccessLayer
         #endregion
 
         #region Getters & Setters
-        public IResourceHandler ResourceHandler { get; set; }
+
         #endregion
 
         #region Delegates
@@ -51,10 +59,11 @@ namespace AspieTech.Logger.DataAccessLayer
         /// Get localized logger.
         /// </summary>
         /// <returns></returns>
-        public static LocalizableLogHandler GetCurrentLocalizedLogger(IResourceHandler resourceHandler)
+        public static LocalizableLogHandler GetCurrentLocalizedLogger(IResourceHandler resourceHandler, IRepository loggerRepository)
         {
             LocalizableLogHandler logger = (LocalizableLogHandler)LogManager.GetCurrentClassLogger(typeof(LocalizableLogHandler));
             logger.ResourceHandler = resourceHandler;
+            logger.dbLogger = new DbLoggerBLL(loggerRepository);
             return logger;
         }
 
@@ -214,15 +223,6 @@ namespace AspieTech.Logger.DataAccessLayer
             this.Dispose(true);
             GC.SuppressFinalize(this);
         }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (this.disposed)
-                return;
-            if (disposing)
-                handle.Dispose();
-            this.disposed = true;
-        }
         #endregion
 
         #region Private methods
@@ -280,6 +280,17 @@ namespace AspieTech.Logger.DataAccessLayer
             logEventInfo.Properties.Add("Args", args);
 
             base.Log(typeof(LocalizableLogHandler), logEventInfo);
+
+            this.dbLogger.Create(logEventInfo);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (this.disposed)
+                return;
+            if (disposing)
+                handle.Dispose();
+            this.disposed = true;
         }
         #endregion
     }

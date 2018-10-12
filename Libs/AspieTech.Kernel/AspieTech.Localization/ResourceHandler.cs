@@ -1,4 +1,5 @@
 ﻿using AspieTech.DependencyInjection.Abstractions.Localization.Interfaces;
+using AspieTech.DependencyInjection.Abstractions.Logger.Interfaces;
 using AspieTech.Localization.Attributes;
 using AspieTech.Localization.Enumerations;
 using AspieTech.Utils.Enums;
@@ -11,12 +12,15 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
-using System.Threading.Tasks;
 
 namespace AspieTech.Localization
 {
     public class ResourceHandler : IResourceHandler
     {
+        #region Public properties
+        public ILocalizableLogHandler LocalizableLogHandler { get; set; }
+        #endregion
+
         #region Private properties
         private object locker = new object();
         private IEnumerable<CultureInfo> cultures;
@@ -61,7 +65,7 @@ namespace AspieTech.Localization
                 LocalizationUtilityAttribute localizationUtility = EnumHandler.GetCustomAttributesOnType<TResourceCode, LocalizationUtilityAttribute>();
 
                 if (localizationUtility == null)
-                    throw new ArgumentException("La type doit être une resource de traduction.");
+                    throw new ArgumentException("Le type doit être une ressource de traduction.");
 
                 ResourceCodeDetailsAttribute details = EnumHandler.GetCustomAttributesOnValue<TResourceCode, ResourceCodeDetailsAttribute>(resourceCode);
 
@@ -85,7 +89,7 @@ namespace AspieTech.Localization
                 LocalizationUtilityAttribute localizationUtility = EnumHandler.GetCustomAttributesOnType<TResourceCode, LocalizationUtilityAttribute>();
 
                 if (localizationUtility == null)
-                    throw new ArgumentException("La type doit être une resource de traduction.");
+                    throw new ArgumentException("Le type doit être une ressource de traduction.");
 
                 ResourceCodeDetailsAttribute details = EnumHandler.GetCustomAttributesOnValue<TResourceCode, ResourceCodeDetailsAttribute>(resourceCode);
 
@@ -109,7 +113,7 @@ namespace AspieTech.Localization
                 LocalizationUtilityAttribute localizationUtility = EnumHandler.GetCustomAttributesOnType<TResourceCode, LocalizationUtilityAttribute>();
 
                 if (localizationUtility == null)
-                    throw new ArgumentException("La type doit être une resource de traduction.");
+                    throw new ArgumentException("Le type doit être une ressource de traduction.");
 
                 ResourceCodeDetailsAttribute details = EnumHandler.GetCustomAttributesOnValue<TResourceCode, ResourceCodeDetailsAttribute>(resourceCode);
 
@@ -140,7 +144,7 @@ namespace AspieTech.Localization
                 LocalizationUtilityAttribute localizationUtility = EnumHandler.GetCustomAttributesOnType<TResourceCode, LocalizationUtilityAttribute>();
 
                 if (localizationUtility == null)
-                    throw new ArgumentException("");
+                    throw new ArgumentException("Le type doit être une ressource de traduction.");
 
                 ResourceCodeDetailsAttribute resourceCodeDetails = EnumHandler.GetCustomAttributesOnValue<TResourceCode, ResourceCodeDetailsAttribute>(resourceCode);
                 ResourceManager rm = this.GetResourceManager<TResourceCode>();

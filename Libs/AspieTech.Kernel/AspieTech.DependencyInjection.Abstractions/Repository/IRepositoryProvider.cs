@@ -1,7 +1,13 @@
-﻿namespace AspieTech.DependencyInjection.Abstractions.Logger.DataAccessLayer.Interfaces
+﻿using AspieTech.DependencyInjection.Abstractions.Logger.Interfaces;
+
+namespace AspieTech.DependencyInjection.Abstractions.Repository
 {
-    public interface IFactory
+    public interface IRepositoryProvider
     {
+        #region Public properties
+
+        #endregion
+
         #region Private properties
 
         #endregion
@@ -27,7 +33,7 @@
         #endregion
 
         #region Public methods
-
+        IRepository Provide(string connectionString);
         #endregion
 
         #region Private methods

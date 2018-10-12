@@ -1,10 +1,14 @@
-﻿using AspieTech.DependencyInjection.Abstractions.Logger.DataAccessLayer.Interfaces.Factories;
-using AspieTech.DependencyInjection.Abstractions.Logger.DataAccessLayer.Interfaces;
+﻿using System.Linq;
+using System.Threading.Tasks;
 
-namespace AspieTech.DependencyInjection.Abstractions.Logger.DataAccessLayer.Interfaces
+namespace AspieTech.DependencyInjection.Abstractions.Logger.Interfaces
 {
-    public interface ICAAFactoryContainer : IFactoryContainer
+    public interface IDbLogger
     {
+        #region Public properties
+
+        #endregion
+
         #region Private properties
 
         #endregion
@@ -30,7 +34,9 @@ namespace AspieTech.DependencyInjection.Abstractions.Logger.DataAccessLayer.Inte
         #endregion
 
         #region Public methods
-        ILogEventInfoFactory LogEventInfo { get; }
+        Task Create<TLogEventInfo>(TLogEventInfo logEventInfo);
+
+        Task<IQueryable<ILogEventInfoEntity>> Read();
         #endregion
 
         #region Private methods
