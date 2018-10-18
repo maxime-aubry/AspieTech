@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\AspieTech.Utils\AspieTech.Utils\AspieTech.Utils.csproj" />
     <ProjectReference Include="..\AspieTech.DependencyInjection.Abstractions\AspieTech.DependencyInjection.Abstractions.csproj" />
   </ItemGroup>
 

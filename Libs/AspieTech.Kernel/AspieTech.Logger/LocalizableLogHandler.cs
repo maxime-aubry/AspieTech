@@ -2,6 +2,7 @@
 using AspieTech.DependencyInjection.Abstractions.Logger.Interfaces;
 using AspieTech.DependencyInjection.Abstractions.Repository;
 using AspieTech.Logger.BusinessLogicLayer;
+using AspieTech.Logger.DataAccessLayer.Entities;
 using Microsoft.Win32.SafeHandles;
 using NLog;
 using System;
@@ -20,7 +21,7 @@ namespace AspieTech.Logger.DataAccessLayer
         #endregion
 
         #region Private properties
-        private IRepository repository { get; set; }
+        private IRepository<LogEventInfoEntity> repository { get; set; }
         private DbLoggerBLL dbLogger { get; set; }
         private object locker = new object();
         private const string resourceCodeType = "ResourceCodeType";
@@ -59,8 +60,9 @@ namespace AspieTech.Logger.DataAccessLayer
         /// Get localized logger.
         /// </summary>
         /// <returns></returns>
-        public static LocalizableLogHandler GetCurrentLocalizedLogger(IResourceHandler resourceHandler, IRepository loggerRepository)
+        public static LocalizableLogHandler GetCurrentLocalizedLogger(IResourceHandler resourceHandler, IRepositoryProvider repositoryProvider, string connectionString)
         {
+            IRepository<LogEventInfoEntity> loggerRepository = repositoryProvider.Provide<LogEventInfoEntity>(connectionString);
             LocalizableLogHandler logger = (LocalizableLogHandler)LogManager.GetCurrentClassLogger(typeof(LocalizableLogHandler));
             logger.ResourceHandler = resourceHandler;
             logger.dbLogger = new DbLoggerBLL(loggerRepository);

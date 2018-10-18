@@ -62,12 +62,12 @@ namespace AspieTech.Localization
                 if (!typeof(TResourceCode).IsEnum)
                     throw new ArgumentException("Le type TResourceCode doit être une énumération.");
 
-                LocalizationUtilityAttribute localizationUtility = EnumHandler.GetCustomAttributesOnType<TResourceCode, LocalizationUtilityAttribute>();
+                LocalizationUtilityAttribute localizationUtility = EnumHandler.GetCustomAttributeOnType<TResourceCode, LocalizationUtilityAttribute>();
 
                 if (localizationUtility == null)
                     throw new ArgumentException("Le type doit être une ressource de traduction.");
 
-                ResourceCodeDetailsAttribute details = EnumHandler.GetCustomAttributesOnValue<TResourceCode, ResourceCodeDetailsAttribute>(resourceCode);
+                ResourceCodeDetailsAttribute details = EnumHandler.GetCustomAttributeOnValue<TResourceCode, ResourceCodeDetailsAttribute>(resourceCode);
 
                 bool result = (details.SolutionPart == ESolutionPart.UserInterface);
                 return result;
@@ -86,12 +86,12 @@ namespace AspieTech.Localization
                 if (!typeof(TResourceCode).IsEnum)
                     throw new ArgumentException("Le type TResourceCode doit être une énumération.");
 
-                LocalizationUtilityAttribute localizationUtility = EnumHandler.GetCustomAttributesOnType<TResourceCode, LocalizationUtilityAttribute>();
+                LocalizationUtilityAttribute localizationUtility = EnumHandler.GetCustomAttributeOnType<TResourceCode, LocalizationUtilityAttribute>();
 
                 if (localizationUtility == null)
                     throw new ArgumentException("Le type doit être une ressource de traduction.");
 
-                ResourceCodeDetailsAttribute details = EnumHandler.GetCustomAttributesOnValue<TResourceCode, ResourceCodeDetailsAttribute>(resourceCode);
+                ResourceCodeDetailsAttribute details = EnumHandler.GetCustomAttributeOnValue<TResourceCode, ResourceCodeDetailsAttribute>(resourceCode);
 
                 bool result = (details.SolutionPart == ESolutionPart.ClientError);
                 return result;
@@ -110,12 +110,12 @@ namespace AspieTech.Localization
                 if (!typeof(TResourceCode).IsEnum)
                     throw new ArgumentException("Le type TResourceCode doit être une énumération.");
 
-                LocalizationUtilityAttribute localizationUtility = EnumHandler.GetCustomAttributesOnType<TResourceCode, LocalizationUtilityAttribute>();
+                LocalizationUtilityAttribute localizationUtility = EnumHandler.GetCustomAttributeOnType<TResourceCode, LocalizationUtilityAttribute>();
 
                 if (localizationUtility == null)
                     throw new ArgumentException("Le type doit être une ressource de traduction.");
 
-                ResourceCodeDetailsAttribute details = EnumHandler.GetCustomAttributesOnValue<TResourceCode, ResourceCodeDetailsAttribute>(resourceCode);
+                ResourceCodeDetailsAttribute details = EnumHandler.GetCustomAttributeOnValue<TResourceCode, ResourceCodeDetailsAttribute>(resourceCode);
 
                 bool result = (details.SolutionPart == ESolutionPart.ServerError);
                 return result;
@@ -141,12 +141,12 @@ namespace AspieTech.Localization
                 if (!typeof(TResourceCode).IsEnum)
                     throw new ArgumentException("Le type TResourceCode doit être une énumération.");
 
-                LocalizationUtilityAttribute localizationUtility = EnumHandler.GetCustomAttributesOnType<TResourceCode, LocalizationUtilityAttribute>();
+                LocalizationUtilityAttribute localizationUtility = EnumHandler.GetCustomAttributeOnType<TResourceCode, LocalizationUtilityAttribute>();
 
                 if (localizationUtility == null)
                     throw new ArgumentException("Le type doit être une ressource de traduction.");
 
-                ResourceCodeDetailsAttribute resourceCodeDetails = EnumHandler.GetCustomAttributesOnValue<TResourceCode, ResourceCodeDetailsAttribute>(resourceCode);
+                ResourceCodeDetailsAttribute resourceCodeDetails = EnumHandler.GetCustomAttributeOnValue<TResourceCode, ResourceCodeDetailsAttribute>(resourceCode);
                 ResourceManager rm = this.GetResourceManager<TResourceCode>();
 
                 IResourceResult <TResourceCode> resourceResult = null;
@@ -228,7 +228,7 @@ namespace AspieTech.Localization
             if (!typeof(TResourceCode).IsEnum)
                 throw new ArgumentException("Le type TResourceCode doit être une énumération.");
 
-            LocalizationUtilityAttribute localizationUtility = EnumHandler.GetCustomAttributesOnType<TResourceCode, LocalizationUtilityAttribute>();
+            LocalizationUtilityAttribute localizationUtility = EnumHandler.GetCustomAttributeOnType<TResourceCode, LocalizationUtilityAttribute>();
             PropertyInfo propertyInfo = localizationUtility.ResourceManagerType.GetProperty("ResourceManager", BindingFlags.Public | BindingFlags.Static);
             ResourceManager resourceManager = propertyInfo.GetValue(null, null) as ResourceManager;
             return resourceManager;

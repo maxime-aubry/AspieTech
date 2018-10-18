@@ -1,6 +1,7 @@
 ﻿using AspieTech.DependencyInjection.Abstractions.Localization.Interfaces;
 using AspieTech.DependencyInjection.Abstractions.Logger.Interfaces;
 using AspieTech.DependencyInjection.Abstractions.Repository;
+using AspieTech.Logger.DataAccessLayer.Entities;
 using Microsoft.Win32.SafeHandles;
 using System;
 using System.Runtime.InteropServices;

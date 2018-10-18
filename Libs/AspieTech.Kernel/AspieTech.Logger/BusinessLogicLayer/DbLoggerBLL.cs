@@ -14,11 +14,11 @@ namespace AspieTech.Logger.BusinessLogicLayer
         #endregion
 
         #region Private properties
-        private IRepository repository { get; set; }
+        private IRepository<LogEventInfoEntity> repository { get; set; }
         #endregion
 
         #region Constructors
-        public DbLoggerBLL(IRepository repository)
+        public DbLoggerBLL(IRepository<LogEventInfoEntity> repository)
         {
             this.repository = repository;
         }
@@ -46,7 +46,7 @@ namespace AspieTech.Logger.BusinessLogicLayer
             try
             {
                 LogEventInfoEntity entity = Mapper.Map<LogEventInfoEntity>(logEventInfo);
-                await this.repository.Create<LogEventInfoEntity>(entity);
+                await this.repository.Create(entity);
             }
             catch (Exception e)
             {
@@ -58,7 +58,7 @@ namespace AspieTech.Logger.BusinessLogicLayer
         {
             try
             {
-                return await this.repository.Read<LogEventInfoEntity>();
+                return await this.repository.Read();
             }
             catch (Exception e)
             {

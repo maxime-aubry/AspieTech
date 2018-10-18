@@ -45,7 +45,8 @@ namespace AspieTech.Repository
         /// </summary>
         /// <param name="connectionString"></param>
         /// <returns></returns>
-        public IRepository Provide(string connectionString)
+        public IRepository<TEntity> Provide<TEntity>(string connectionString)
+             where TEntity : class
         {
             try
             {
@@ -62,9 +63,9 @@ namespace AspieTech.Repository
                     Type connectionType = context.Database.Connection.GetType();
 
                     if (factoryType.FullName == "System.Data.SqlClient.SqlClientFactory")
-                        return RepositoryProvider.ProvideSqlRepository(connectionString);
+                        return RepositoryProvider.ProvideSqlRepository<TEntity>(connectionString);
                     if (factoryType.FullName == "mongo")
-                        return RepositoryProvider.ProvideMongoRepository(connectionString);
+                        return RepositoryProvider.ProvideMongoRepository<TEntity>(connectionString);
 
                     throw new Exception();
                 }
@@ -82,7 +83,8 @@ namespace AspieTech.Repository
         /// </summary>
         /// <param name="connectionString">Connection string for database</param>
         /// <returns>MongoDB repository</returns>
-        private static IRepository ProvideMongoRepository(string connectionString)
+        private static IRepository<TEntity> ProvideMongoRepository<TEntity>(string connectionString)
+             where TEntity : class
         {
             string databaseName = MongoUrl.Create(connectionString).DatabaseName;
             IMongoClient client = new MongoClient(connectionString);
@@ -90,7 +92,7 @@ namespace AspieTech.Repository
 
             using (IUnitOfWork<IMongoDatabase> unitOfWork = new MongoUnitOfWork(database))
             {
-                return new MongoRepository(unitOfWork);
+                return new MongoRepository<TEntity>(unitOfWork);
             }
         }
 
@@ -99,12 +101,13 @@ namespace AspieTech.Repository
         /// </summary>
         /// <param name="connectionString">Connection string for database</param>
         /// <returns>SQL repository</returns>
-        private static IRepository ProvideSqlRepository(string connectionString)
+        private static IRepository<TEntity> ProvideSqlRepository<TEntity>(string connectionString)
+             where TEntity : class
         {
             DbContext context = new DbContext(connectionString);
             using (IUnitOfWork<DbContext> unitOfWork = new SqlUnitOfWork(context))
             {
-                return new SqlRepository(unitOfWork);
+                return new SqlRepository<TEntity>(unitOfWork);
             }
         }
         #endregion

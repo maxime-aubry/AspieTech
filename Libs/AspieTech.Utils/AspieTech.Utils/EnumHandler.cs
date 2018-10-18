@@ -7,6 +7,10 @@ namespace AspieTech.Utils.Enums
 {
     public static class EnumHandler
     {
+        #region Public properties
+
+        #endregion
+
         #region Private properties
 
         #endregion
@@ -56,21 +60,26 @@ namespace AspieTech.Utils.Enums
             }
         }
 
-        public static TAttribute GetCustomAttributesOnType<TEnum, TAttribute>()
+        public static TAttribute GetCustomAttributeOnType<TEnum, TAttribute>()
+            where TEnum : struct, IConvertible
+            where TAttribute : Attribute
+        {
+            IEnumerable<TAttribute> attributes = EnumHandler.GetCustomAttributesOnType<TEnum, TAttribute>();
+            TAttribute attribute = attributes.FirstOrDefault();
+            return attribute;
+        }
+
+        public static IEnumerable<TAttribute> GetCustomAttributesOnType<TEnum, TAttribute>()
             where TEnum : struct, IConvertible
             where TAttribute : Attribute
         {
             try
             {
                 if (!typeof(TEnum).IsEnum)
-                    throw new ArgumentException("Le type T doit être une énumération.");
+                    throw new ArgumentException($"Le type {typeof(TEnum).FullName} doit être une énumération.");
 
-                TAttribute attribute = typeof(TEnum).GetCustomAttribute<TAttribute>(false);
-
-                if (attribute == null)
-                    throw new NullReferenceException("L'énumération n'est pas un accesseur à des ressources de traduction.");
-
-                return attribute;
+                IEnumerable<TAttribute> attributes = typeof(TEnum).GetCustomAttributes<TAttribute>(false);
+                return attributes;
             }
             catch (Exception e)
             {
@@ -78,29 +87,31 @@ namespace AspieTech.Utils.Enums
             }
         }
 
-        public static TAttribute GetCustomAttributesOnValue<TEnum, TAttribute>(TEnum value)
+        public static TAttribute GetCustomAttributeOnValue<TEnum, TAttribute>(TEnum value)
+            where TEnum : struct, IConvertible
+            where TAttribute : Attribute
+        {
+            IEnumerable<TAttribute> attributes = EnumHandler.GetCustomAttributesOnValue<TEnum, TAttribute>(value);
+            TAttribute attribute = attributes.FirstOrDefault();
+            return attribute;
+        }
+
+        public static IEnumerable<TAttribute> GetCustomAttributesOnValue<TEnum, TAttribute>(TEnum value)
             where TEnum : struct, IConvertible
             where TAttribute : Attribute
         {
             try
             {
                 if (!typeof(TEnum).IsEnum)
-                    throw new ArgumentException("Le type T doit être une énumération.");
+                    throw new ArgumentException($"Le type {typeof(TEnum).FullName} doit être une énumération.");
 
                 MemberInfo memberInfo = typeof(TEnum).GetMember(value.ToString()).FirstOrDefault();
 
                 if (memberInfo == null)
-                    throw new ArgumentException("La valeur passée en paramètre n'appartient pas au type T.");
+                    throw new ArgumentException($"La valeur passée en paramètre n'appartient pas au type {typeof(TEnum).FullName}.");
 
-                TAttribute details =
-                            memberInfo
-                            .GetCustomAttribute(typeof(TAttribute), false)
-                            as TAttribute;
-
-                if (details == null)
-                    throw new NullReferenceException("L'énumération n'est pas un accesseur à des ressources de traduction.");
-
-                return details;
+                IEnumerable<TAttribute> attributes = memberInfo.GetCustomAttributes<TAttribute>(false);
+                return attributes;
             }
             catch (Exception e)
             {

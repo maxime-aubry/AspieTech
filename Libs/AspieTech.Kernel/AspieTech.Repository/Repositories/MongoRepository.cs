@@ -15,7 +15,8 @@ namespace AspieTech.Repository
     /// <summary>
     /// MongoDB repository
     /// </summary>
-    public class MongoRepository : IRepository
+    public class MongoRepository<TEntity> : IRepository<TEntity>
+        where TEntity : class
     {
         #region Public properties
 
@@ -58,15 +59,14 @@ namespace AspieTech.Repository
         /// <summary>
         /// CRUD. Stores an item into database
         /// </summary>
-        /// <typeparam name="TEntity">Entity type to process</typeparam>
         /// <param name="entity">Entity value to process</param>
         /// <returns>Asynchronous task</returns>
-        public async Task Create<TEntity>(TEntity entity) where TEntity : class
+        public async Task Create(TEntity entity)
         {
             try
             {
                 IMongoCollection<TEntity> collection = null;
-                this.CreateCollectionIfDoesNotExists<TEntity>(out collection);
+                this.CreateCollectionIfDoesNotExists(out collection);
                 await collection.InsertOneAsync(entity);
             }
             catch (Exception e)
@@ -78,14 +78,13 @@ namespace AspieTech.Repository
         /// <summary>
         /// CRUD. Reads items from database
         /// </summary>
-        /// <typeparam name="TEntity">Entity type to process</typeparam>
         /// <returns>Queryable collection of TEntity</returns>
-        public async Task<IQueryable<TEntity>> Read<TEntity>() where TEntity : class
+        public async Task<IQueryable<TEntity>> Read()
         {
             try
             {
                 IMongoCollection<TEntity> collection = null;
-                this.CreateCollectionIfDoesNotExists<TEntity>(out collection);
+                this.CreateCollectionIfDoesNotExists(out collection);
                 return collection.AsQueryable<TEntity>();
             }
             catch (Exception e)
@@ -97,10 +96,9 @@ namespace AspieTech.Repository
         /// <summary>
         /// CRUD. Updates an item from database
         /// </summary>
-        /// <typeparam name="TEntity">Entity type to process</typeparam>
         /// <param name="entity">Entity value to process</param>
         /// <returns>Asynchronous task with boolean value to inform about success or failure</returns>
-        public async Task<bool> Update<TEntity>(TEntity entity) where TEntity : class
+        public async Task<bool> Update(TEntity entity)
         {
             throw new Exception();
             //try
@@ -138,18 +136,17 @@ namespace AspieTech.Repository
         /// <summary>
         /// CRUD. Destroys an item from database
         /// </summary>
-        /// <typeparam name="TEntity">Entity type to process</typeparam>
         /// <param name="entity">Entity value to process</param>
         /// <returns>Asynchronous task with boolean value to inform about success or failure</returns>
-        public async Task<bool> Destroy<TEntity>(TEntity entity) where TEntity : class
+        public async Task<bool> Destroy(TEntity entity)
         {
             try
             {
                 IMongoCollection<TEntity> collection = null;
-                this.CreateCollectionIfDoesNotExists<TEntity>(out collection);
+                this.CreateCollectionIfDoesNotExists(out collection);
 
-                PropertyInfo idField = MongoRepository.GetIdField<TEntity>();
-                string id = MongoRepository.GetValue<TEntity>(entity, idField);
+                PropertyInfo idField = MongoRepository<TEntity>.GetIdField();
+                string id = MongoRepository<TEntity>.GetValue(entity, idField);
                 ObjectId objectId = ObjectId.Empty;
 
                 if (ObjectId.TryParse(id, out objectId))
@@ -167,6 +164,18 @@ namespace AspieTech.Repository
             }
         }
 
+        public Task<int> ExecStoredProcedureWithoutReturn<TEntity>(IStoredProcedure<TEntity> sp)
+             where TEntity : class
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IQueryable<TEntity>> ExecStoredProcedureWithReturn<TEntity>(IStoredProcedure<TEntity> sp)
+             where TEntity : class
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Disposes the repository
         /// </summary>
@@ -181,9 +190,8 @@ namespace AspieTech.Repository
         /// <summary>
         /// Creates a collection into MongoDB if does not exist
         /// </summary>
-        /// <typeparam name="TEntity">Entity type to process</typeparam>
         /// <param name="collection">output result of IMongoCollection</param>
-        private void CreateCollectionIfDoesNotExists<TEntity>(out IMongoCollection<TEntity> collection) where TEntity : class
+        private void CreateCollectionIfDoesNotExists(out IMongoCollection<TEntity> collection)
         {
             collection = this.unitOfWork.Context.GetCollection<TEntity>(typeof(TEntity).Name);
 
@@ -197,9 +205,8 @@ namespace AspieTech.Repository
         /// <summary>
         /// Provides a identifier field from current class model
         /// </summary>
-        /// <typeparam name="TEntity">Entity type to process</typeparam>
         /// <returns>PropertyInfo of identifier field</returns>
-        private static PropertyInfo GetIdField<TEntity>()
+        private static PropertyInfo GetIdField()
         {
             IEnumerable<PropertyInfo> properties = typeof(TEntity).GetProperties().AsEnumerable().Where(p => Attribute.IsDefined(p, typeof(BsonIdAttribute)));
 
@@ -212,9 +219,8 @@ namespace AspieTech.Repository
         /// <summary>
         /// Provides a collection of data fields from current class model
         /// </summary>
-        /// <typeparam name="TEntity">Entity type to process</typeparam>
         /// <returns>Collection of PropertyInfo of data field</returns>
-        private static IEnumerable<PropertyInfo> GetDataFields<TEntity>()
+        private static IEnumerable<PropertyInfo> GetDataFields()
         {
             IEnumerable<PropertyInfo> properties = typeof(TEntity).GetProperties().AsEnumerable().Where(p => !Attribute.IsDefined(p, typeof(BsonIdAttribute)));
             return properties;
@@ -223,11 +229,10 @@ namespace AspieTech.Repository
         /// <summary>
         /// Provides the value of a field from current class model
         /// </summary>
-        /// <typeparam name="TEntity">Entity type to process</typeparam>
         /// <param name="entity"></param>
         /// <param name="property"></param>
         /// <returns></returns>
-        private static string GetValue<TEntity>(TEntity entity, PropertyInfo property)
+        private static string GetValue(TEntity entity, PropertyInfo property)
         {
             string value = property.GetValue(entity) as string;
             return value;

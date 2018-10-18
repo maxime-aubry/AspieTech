@@ -1,6 +1,10 @@
-﻿namespace AspieTech.DependencyInjection.Abstractions.Repository
+﻿using System.Collections.Generic;
+using System.Data.SqlClient;
+
+namespace AspieTech.DependencyInjection.Abstractions.Repository
 {
-    public interface IRepositoryProvider
+    public interface IStoredProcedure<TEntity>
+        where TEntity : class
     {
         #region Public properties
 
@@ -19,7 +23,9 @@
         #endregion
 
         #region Getters & Setters
-
+        string Name { get; }
+        TEntity ResultType { get; }
+        IEnumerable<SqlParameter> Parameters { get; }
         #endregion
 
         #region Delegates
@@ -31,7 +37,7 @@
         #endregion
 
         #region Public methods
-        IRepository<TEntity> Provide<TEntity>(string connectionString) where TEntity : class;
+
         #endregion
 
         #region Private methods

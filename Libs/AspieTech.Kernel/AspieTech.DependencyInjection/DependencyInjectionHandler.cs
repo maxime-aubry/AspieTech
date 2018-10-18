@@ -75,8 +75,7 @@ namespace AspieTech.DependencyInjection
             IServiceCollection services = new ServiceCollection();
             IResourceHandler resourceHandler = new ResourceHandler();
             IRepositoryProvider repositoryProvider = new RepositoryProvider();
-            IRepository loggerRepository = repositoryProvider.Provide(builder.GetConnectionString("LogsDB"));
-            ILocalizableLogHandler localizableLogHandler = LocalizableLogHandler.GetCurrentLocalizedLogger(resourceHandler, loggerRepository);
+            ILocalizableLogHandler localizableLogHandler = LocalizableLogHandler.GetCurrentLocalizedLogger(resourceHandler, repositoryProvider, builder.GetConnectionString("LogsDB"));
             services.AddSingleton<IResourceHandler>(resourceHandler);
             services.AddSingleton<ILocalizableLogHandler>(localizableLogHandler);
             services.AddSingleton<IRepositoryProvider>(repositoryProvider);
