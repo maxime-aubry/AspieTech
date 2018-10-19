@@ -32,7 +32,7 @@ namespace AspieTech.Repository.Test
         {
             string name = null;
             SqlParameter[] parameters = null;
-            StoredProcedureAttribute attribute = new StoredProcedureAttribute("[maprocedurestockee] @p1 XML INPUT, @p2 BIT OUTPUT");
+            StoredProcedureAttribute attribute = new StoredProcedureAttribute("[maprocedurestockee] @p1 Xml Input, @p2 Bit Output");
             attribute.GenerateStoredProcedure(out name, out parameters);
         }
     }

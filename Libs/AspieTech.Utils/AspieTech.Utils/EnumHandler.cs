@@ -60,6 +60,27 @@ namespace AspieTech.Utils.Enums
             }
         }
 
+        public static TEnum GetEnumFromString<TEnum>(string value)
+            where TEnum : struct, IConvertible
+        {
+            try
+            {
+                if (!typeof(TEnum).IsEnum)
+                    throw new ArgumentException("Le type T doit être une énumération.");
+
+                TEnum enumValue = default(TEnum);
+
+                if (!Enum.TryParse<TEnum>(value, out enumValue))
+                    throw new ArgumentException();
+
+                return enumValue;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
         public static TAttribute GetCustomAttributeOnType<TEnum, TAttribute>()
             where TEnum : struct, IConvertible
             where TAttribute : Attribute
